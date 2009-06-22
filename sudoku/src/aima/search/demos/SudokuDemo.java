@@ -13,13 +13,20 @@ import aima.search.uninformed.DepthFirstSearch;
 
 public class SudokuDemo {
 
-	static SudokuBoard tableroComplejo = new SudokuBoard(new int[][] {
-			{ 0, 5, 2, 1, 7, 4, 8, 6, 3 }, { 3, 7, 6, 8, 2, 5, 9, 1, 4 },
-			{ 8, 1, 4, 9, 3, 6, 7, 2, 5 }, { 6, 9, 5, 3, 1, 7, 4, 8, 2 },
-			{ 4, 3, 1, 2, 6, 8, 5, 9, 7 }, { 2, 8, 7, 5, 4, 9, 6, 3, 1 },
-			{ 9, 2, 8, 4, 9, 1, 3, 5, 6 }, { 5, 4, 3, 6, 8, 2, 1, 7, 9 },
-			{ 1, 6, 9, 7, 5, 3, 2, 4, 8 } });
+	static SudokuBoard tableroComplejo = new SudokuBoard(new int[][] {{ 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+			{ 0,5,6,7,8,9,1,2,3 },
+			{7,8,9,1,2,3,4,5,6},
+			{2,1,4,3,6,5,8,9,7 },
+			{ 3,6,5,8,9,7,2,1,4 },
+			{8,9,7,2,1,4,0 ,6,5},
+			{ 5,3,1,6,4,2,9,7,8},
+			{ 6,4,2,9,7,8,5,3,1 },
+			{ 9,7,8,5,3,1,6,0,2 } });
 
+	
+	
+	
+	
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
 			{ 0, 0, 6, 0, 9, 8, 4, 0, 0 }, 
 			{ 8, 9, 0, 4, 0, 1, 0, 0, 0 },
@@ -49,7 +56,7 @@ public class SudokuDemo {
 	private static void sudokuWithDepthFirstSearch() {
 		System.out.println("\nSudokuDemo DFS -->");
 		try {
-			SudokuBoard newBoard = new SudokuBoard(tableroSencillo.getBoard());
+			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
 
 			Problem problem = new Problem(newBoard,
 					new SudokuSuccessorFunction(), new SudokuGoalTest());
@@ -66,9 +73,9 @@ public class SudokuDemo {
 	}
 
 	private static void sudokuAStarDemo() {
-		System.out.println("\nSudokuDemo DFS -->");
+		System.out.println("\nSudokuDemo AStar -->");
 		try {
-			SudokuBoard newBoard = new SudokuBoard(tableroSencillo.getBoard());
+			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
 			Problem problem = new Problem(newBoard,
 					new SudokuSuccessorFunction(), new SudokuGoalTest(),
 					new EmptyBoxHeuristicFunction());
