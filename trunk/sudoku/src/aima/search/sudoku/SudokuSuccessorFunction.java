@@ -18,17 +18,18 @@ public class SudokuSuccessorFunction implements SuccessorFunction {
 				if (board.getBoard()[fila][columna] == 0) {
 					for (int k = 1; k <= 9; k++) {
 						if (board.ubicarNumero(fila, columna, k)) {
-							SudokuBoard newBoard = copyOf(board);
+							SudokuBoard newBoard = copyOf(board.getBoard());
 							newBoard.setValue(fila, columna, k);
 							successors.add(new Successor(newBoard));
+							//newBoard.printBoard();
 						}
 					}
 				}
 			}
 
 		}
-		System.out.printf("lista = %d\n", successors.size());
-		board.printBoard();
+		//System.out.printf("lista = %d\n", successors.size());
+		//board.printBoard();
 		return successors;
 	}
 
@@ -38,9 +39,9 @@ public class SudokuSuccessorFunction implements SuccessorFunction {
 	 * Successor(EightPuzzleBoard.UP, newBoard)); }
 	 */
 
-	private SudokuBoard copyOf(SudokuBoard board) {
+	private SudokuBoard copyOf(int [][] board) {
 		SudokuBoard newBoard = new SudokuBoard();
-		newBoard.setBoard(board);
+		newBoard.setBoard(newBoard, board);
 		return newBoard;
 	}
 
