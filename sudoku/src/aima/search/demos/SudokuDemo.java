@@ -21,10 +21,14 @@ public class SudokuDemo {
 			{ 1, 6, 9, 7, 5, 3, 2, 4, 8 } });
 
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
-			{ 0, 0, 6, 0, 9, 8, 4, 0, 0 }, { 8, 9, 0, 4, 0, 1, 0, 0, 0 },
-			{ 0, 1, 5, 0, 3, 0, 9, 0, 0 }, { 9, 5, 0, 0, 2, 0, 3, 0, 1 },
-			{ 0, 7, 0, 0, 0, 0, 0, 8, 0 }, { 2, 0, 1, 0, 8, 0, 0, 5, 6 },
-			{ 0, 0, 4, 0, 7, 0, 6, 9, 0 }, { 0, 0, 0, 6, 0, 4, 0, 2, 3 },
+			{ 0, 0, 6, 0, 9, 8, 4, 0, 0 }, 
+			{ 8, 9, 0, 4, 0, 1, 0, 0, 0 },
+			{ 0, 1, 5, 0, 3, 0, 9, 0, 0 },
+			{ 9, 5, 0, 0, 2, 0, 3, 0, 1 },
+			{ 0, 7, 0, 0, 0, 0, 0, 8, 0 },
+			{ 2, 0, 1, 0, 8, 0, 0, 5, 6 },
+			{ 0, 0, 4, 0, 7, 0, 6, 9, 0 },
+			{ 0, 0, 0, 6, 0, 4, 0, 2, 3 },
 			{ 0, 0, 2, 3, 1, 0, 8, 0, 0 } });
 
 	public static void main(String[] args) {
@@ -34,8 +38,8 @@ public class SudokuDemo {
 
 	private static void newSudokuDemo() {
 		// System.out.println(tableroComplejo.ubicarNumero(1, 4, 6));
-		// sudokuWithDepthFirstSearch();
-		sudokuAStarDemo();
+		sudokuWithDepthFirstSearch();
+		// sudokuAStarDemo();
 		// if(tableroComplejo)
 
 		// printBoard(tableroComplejo);

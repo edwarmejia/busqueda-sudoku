@@ -168,16 +168,22 @@ public class SudokuBoard {
 	 * xycoordinatesFromAbsoluteCoordinate(abspos)[1]; return new
 	 * XYLocation(xpos, ypos); }
 	 */
-	private void set(int fila, int columna, int valor) {
+	/*private void set(int fila, int columna, int valor) {
 		board[fila][columna] = valor;
-	}
+	}*/
 
 	public void setValue(int fila, int columna, int valor) {
-		set(fila, columna, valor);
+		this.board[fila][columna] = valor;
 	}
 
-	public void setBoard(SudokuBoard board) {
-		this.board = board.getBoard();
+	public void setBoard(SudokuBoard board, int [][] tablero) {
+		
+		for(int i = 0; i < 9; i++){
+			for(int j = 0; j < 9; j++){
+				board.setValue(i, j, tablero[i][j]);
+			}
+		}
+
 	}
 
 	/*
@@ -373,7 +379,7 @@ public class SudokuBoard {
 	// private static void
 
 	public void printBoard() {
-
+		System.out.println("\n ----------------- ");
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				System.out.print(' ');
