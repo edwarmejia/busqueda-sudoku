@@ -1,5 +1,6 @@
 package aima.search.sudoku;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,12 @@ import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 
 public class SudokuSuccessorFunction implements SuccessorFunction {
-
+	
+	static int contSucesores = 0;
+	
 	public List getSuccessors(Object state) {
+		
+		
 		SudokuBoard board = (SudokuBoard) state;
 
 		List<Successor> successors = new ArrayList<Successor>();
@@ -28,7 +33,16 @@ public class SudokuSuccessorFunction implements SuccessorFunction {
 			}
 
 		}
-		//System.out.printf("lista = %d\n", successors.size());
+		//if(contSucesores == 0){
+		/*contSucesores += successors.size();
+		System.out.printf("lista = %d\n", contSucesores);
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		//}//
 		//board.printBoard();
 		return successors;
 	}

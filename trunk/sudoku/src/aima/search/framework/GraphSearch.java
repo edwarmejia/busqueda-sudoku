@@ -9,6 +9,9 @@ import java.util.Set;
  * 
  */
 
+
+
+import java.io.IOException;
 /**
  * Artificial Intelligence A Modern Approach (2nd Edition): Figure 3.19, page
  * 83. <code>
@@ -52,7 +55,19 @@ public class GraphSearch extends QueueSearch {
 			closed.add(node.getState());
 			// fringe <- INSERT-ALL(EXPAND(node, problem), fringe)
 			fringe.add(expandNode(node, problem));
-
+			if(fringe.size() > 40000){
+				System.out.println("gomeo\n");
+				System.out.print(fringe.size());
+			}
+			//System.out.print(fringe.size());
+			/*try {
+				System.in.read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			
+			
 		}
 	}
 

@@ -13,18 +13,18 @@ import aima.search.uninformed.DepthFirstSearch;
 
 public class SudokuDemo {
 
-	static SudokuBoard tableroComplejo = new SudokuBoard(new int[][] {{ 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-			{ 0,5,6,7,8,9,1,2,3 },
-			{7,8,9,1,2,3,4,5,6},
-			{2,1,4,3,6,5,8,9,7 },
-			{ 3,6,5,8,9,7,2,1,4 },
-			{8,9,7,2,1,4,0 ,6,5},
-			{ 5,3,1,6,4,2,9,7,8},
-			{ 6,4,2,9,7,8,5,3,1 },
-			{ 9,7,8,5,3,1,6,0,2 } });
+	static SudokuBoard tableroComplejo = new SudokuBoard(new int[][] {
+			{ 0, 0, 3, 4, 5, 6, 7, 8, 0 },
+			{ 4, 5, 0, 7,8,9,1,2,3 },
+			{ 7, 0, 0, 1,2,0,4,5,6},
+			{ 0, 0, 0,3,6,5,8,0,7 },
+			{ 3, 0, 5,8,9,7,0,1,4 },
+			{ 8, 0, 7,0,1,4,0,6,5},
+			{ 5, 0, 1,0,4,2,0,7,8},
+			{ 6, 0, 2,0,7,0,0,0,1 },
+			{ 9, 0, 8,0,3,1,0,4,2 } });
 
-	
-	
+
 	
 	
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
@@ -44,9 +44,8 @@ public class SudokuDemo {
 	}
 
 	private static void newSudokuDemo() {
-		// System.out.println(tableroComplejo.ubicarNumero(1, 4, 6));
-		sudokuWithDepthFirstSearch();
-		// sudokuAStarDemo();
+		//sudokuWithDepthFirstSearch();
+		sudokuAStarDemo();
 		// if(tableroComplejo)
 
 		// printBoard(tableroComplejo);
