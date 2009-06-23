@@ -33,6 +33,7 @@ public class SudokuGoalTest implements GoalTest {
 			}
 
 		// si llega hasta aca el tablero es solucion y retorna true
+		System.out.println("\nLa solucion es:");
 		board.printBoard();
 		return true;
 	}

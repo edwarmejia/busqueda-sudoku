@@ -23,8 +23,12 @@ public abstract class QueueSearch extends NodeExpander {
 		clearInstrumentation();
 		fringe.add(new Node(problem.getInitialState()));
 		setQueueSize(fringe.size());
+		
 		while (!(fringe.isEmpty())) {
 			Node node = fringe.remove();
+			//sacar esto
+			System.gc(); 
+			
 			setQueueSize(fringe.size());
 			if (problem.isGoalState(node.getState())) {
 				setPathCost(node.getPathCost());
