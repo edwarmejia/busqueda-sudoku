@@ -76,6 +76,7 @@ public class SudokuBoard {
 
 		Set<String> population = new HashSet<String>();
 		Random randomNumbers = new Random();
+		
 		int [][] newBoard = new int[9][9];
 		
 		do{
