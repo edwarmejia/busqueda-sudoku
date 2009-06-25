@@ -1,6 +1,7 @@
 package aima.search.demos;
 
 
+import java.util.Random;
 import java.util.Set;
 
 import aima.search.framework.GraphSearch;
@@ -105,11 +106,12 @@ public class SudokuDemo {
 	}
 
 	private static void newSudokuDemo() {
-		sudokuWithDepthFirstSearch();
+		//sudokuWithDepthFirstSearch();
 		//sudokuIDLSDemo(tableroComplejo, true);
 		 //sudokuAStarDemo();
 		// if(tableroComplejo)
 		// printBoard(tableroComplejo);
+		sudokuAG();
 
 	}
 
@@ -152,18 +154,11 @@ public class SudokuDemo {
 		System.out.println("\nSudokuDemo AG -->");
 		try {
 			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
-			Set<Character> finiteAlphabet = null;
 			
-			finiteAlphabet.add('0');
-			finiteAlphabet.add('1');
-			finiteAlphabet.add('2');
-			finiteAlphabet.add('3');
-			finiteAlphabet.add('4');
-			finiteAlphabet.add('5');
-			finiteAlphabet.add('6');
-			finiteAlphabet.add('7');
-			finiteAlphabet.add('8');
-			finiteAlphabet.add('9');
+			
+			System.out.printf("%d", newBoard.getBoard().length);
+			
+			newBoard.initPopulation(newBoard);
 			
 			/*GeneticAlgorithm search = new GeneticAlgorithm(
 										newBoard.getBoard().length, 
