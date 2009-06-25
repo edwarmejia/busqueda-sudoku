@@ -70,7 +70,7 @@ public class SudokuSuccessorFunction implements SuccessorFunction {
 	 * copyOf(board); newBoard.moveGapUp(); successors.add(new
 	 * Successor(EightPuzzleBoard.UP, newBoard)); }
 	 */
-
+	//ESTE HAY QUE SACAR DE ACA SI O SI, YA ESTA EN LA CLASE SUDOKUBOARD
 	private SudokuBoard copyOf(int [][] board) {
 		SudokuBoard newBoard = new SudokuBoard();
 		newBoard.setBoard(newBoard, board);

@@ -1,5 +1,12 @@
 package aima.search.sudoku;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Random;
+
+import aima.search.framework.Successor;
+
+
 public class SudokuBoard {
 
 	/*
@@ -17,6 +24,8 @@ public class SudokuBoard {
 	}
 
 	int[][] board;
+	
+	static int[][][] posibles;
 
 	public SudokuBoard() {
 		board = new int[][] { { 5, 4, 0, 6, 1, 8, 7, 3, 2 },
@@ -28,9 +37,98 @@ public class SudokuBoard {
 
 	public SudokuBoard(int[][] aBoard) {
 		board = aBoard;
+		posibles = new int[9][9][10];
+		
+		/*En el frente del cubo tenemos el tablero*/
+		for(int i = 0; i < aBoard.length; i++){
+			for(int j = 0; j < aBoard.length; j++){
+				posibles[i][j][0] = board[i][j];
+			}
+		}
+		
+		/*Y detras del frente tenemos los numeros posibles a colocar*/
+		for(int i = 0; i < aBoard.length; i++){
+			for(int j = 0; j < aBoard.length; j++){
+				for(int k = 1; k < 10; k++){
+					if(chequearRegion(i, j, k)){
+						posibles[i][j][k] = k;
+					}
+				}
+			}
+		}
+		
 	}
 
+	private boolean hayposibilidad(){
+		
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board.length; j++){
+				for(int k = 1; k < 10; k++){
+					if(posibles[i][j][k] != 0){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	public Set<String> initPopulation(SudokuBoard board){
 
+		Set<String> population = new HashSet<String>();
+		Random randomNumbers = new Random();
+		int [][] newBoard = new int[9][9];
+		
+		do{
+			/*Reseteamos la matriz con los valores del tablero inicial*/
+			for(int i = 0; i < 9; i++){
+				for(int j = 0; j < 9; j++){
+					newBoard[i][j] = board.getBoard()[i][j];
+				}
+			}
+			/*Recorremos toda la matriz buscando valores posibles para llenar la region*/
+			for(int i = 0; i < board.getBoard().length; i++){
+				for(int j = 0; j < board.getBoard().length; j++){
+					if(board.getBoard()[i][j] == 0){
+							boolean coloco = false;
+							/*Ubicamos randomicamente el nuevo valor*/
+							do{
+								int randomValue = randomNumbers.nextInt(10);
+								if(posibles[i][j][randomValue] != 0 && chequearRegion(newBoard, i, j, randomValue)){
+									newBoard[i][j] = randomValue;
+									coloco = true;
+								}
+							}while(!coloco);
+					}
+				}
+			}
+			
+			String string = boardToSting(newBoard);
+			/*Adherimod el nuevo tablero a la poblacion*/
+			if(!string.isEmpty())
+				population.add(string);
+				
+		}while(population.size() < 500);
+		
+		return population;
+	}
+	
+	private String boardToSting(int [][] board){
+		String string = new String();
+		String aux = new String();
+		int columna, fila;
+		
+		for (int i = 0 ; i < 9 ;  i=i+3)
+			for (int j = 0 ; j < 9 ;  j=j+3)
+				for (fila = i ; fila < i+3 ; fila++)
+					for (columna = j ; columna < j+3 ; columna++){
+						aux = (Integer.toString(board[fila][columna]));
+					    string += aux;
+						
+					}
+		
+		return string;
+	}
+	
 	/* Identifica la region a la que pertenecen dicha fila/columna */
 	private int[] identificarRegion(int fila, int columna) {
 		int[] retVal = null;
@@ -96,6 +194,27 @@ public class SudokuBoard {
 		return true;
 	}
 
+	
+	
+	/*ESTO HAY QUE ARREGLAR, NO TIENE SENTIDO QUE HAYA DOS FUNCIONES CASI IGUALES*/
+	/* Chequea que no haya repetidos en la region */
+	private boolean chequearRegion(int [][] board, int fila, int columna, int k) {
+		int[] posic = null;
+		/* Guardamos la fila y la columna de la region */
+		posic = identificarRegion(fila, columna);
+
+		for (int i = posic[0]; i < posic[0] + 3; i++) { /* Chequea la region */
+			for (int j = posic[1]; j < posic[1] + 3; j++) {
+				if (board[i][j] == k) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	
+	
 	/* Recibe fila/columna y un numero k y chequea si es o no posible ubicar */
 	public boolean ubicarNumero(int fila, int columna, int k) {
 		if (this.getBoard()[fila][columna] == 0) {
@@ -355,5 +474,16 @@ public class SudokuBoard {
 		}
 
 	}
+	
+	
+	private SudokuBoard copyOf(int [][] board) {
+		SudokuBoard newBoard = new SudokuBoard();
+		newBoard.setBoard(newBoard, board);
+		return newBoard;
+	}
+
+	
+	
+	
 
 }
