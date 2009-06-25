@@ -13,10 +13,12 @@ import aima.search.framework.QueueSearch;
  * A* search: Minimizing the total estimated solution cost.
  */
 
+
 /**
  * @author Ravi Mohan
  * 
  */
+
 public class AStarSearch extends BestFirstSearch {
 
 	public AStarSearch(QueueSearch search) {

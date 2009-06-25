@@ -38,13 +38,14 @@ public class IterativeDeepeningSearch extends NodeExpander implements Search {
 	private static String PATH_COST = "pathCost";
 
 	private final int limit;
-	private final int listFlag;
+	private final boolean lista_cerrada;
 
 	private final Metrics iterationMetrics;
 
-	public IterativeDeepeningSearch(int bandera) {
+	public IterativeDeepeningSearch(boolean tipo_exec) {
 		this.limit = Integer.MAX_VALUE;
-		this.listFlag = bandera;
+		//this.limit = 10;
+		this.lista_cerrada = tipo_exec;
 		iterationMetrics = new Metrics();
 		iterationMetrics.set(NODES_EXPANDED, 0);
 		iterationMetrics.set(PATH_COST, 0);
@@ -52,7 +53,8 @@ public class IterativeDeepeningSearch extends NodeExpander implements Search {
 
 	public IterativeDeepeningSearch() {
 		this.limit = Integer.MAX_VALUE;
-		this.listFlag = 0;
+		//this.limit = 10;
+		this.lista_cerrada = false;
 		iterationMetrics = new Metrics();
 		iterationMetrics.set(NODES_EXPANDED, 0);
 		iterationMetrics.set(PATH_COST, 0);
@@ -67,7 +69,7 @@ public class IterativeDeepeningSearch extends NodeExpander implements Search {
 		// for depth <- to infinity do
 		for (int i = 1; i <= limit; i++) {
 			// result <- DEPTH-LIMITED-SEARCH(problem, depth)
-			DepthLimitedSearch dls = new DepthLimitedSearch(i);
+			DepthLimitedSearch dls = new DepthLimitedSearch(i, lista_cerrada);
 			List result = dls.search(p);
 			iterationMetrics.set(NODES_EXPANDED, iterationMetrics
 					.getInt(NODES_EXPANDED)

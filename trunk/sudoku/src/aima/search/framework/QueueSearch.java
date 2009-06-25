@@ -6,7 +6,9 @@ package aima.search.framework;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
+import aima.search.sudoku.SudokuBoard;
 /**
  * @author Ravi Mohan
  * 
@@ -20,22 +22,46 @@ public abstract class QueueSearch extends NodeExpander {
 	private static String PATH_COST = "pathCost";
 
 	public List<String> search(Problem problem, NodeStore fringe) {
+		//List<int [][]> listaCerrada = new ArrayList<int [][]>();
+		List<int [][]> listaCerrada = new ArrayList<int[][]>();
+		
+		//boolean cutoff = false;
 		clearInstrumentation();
 		fringe.add(new Node(problem.getInitialState()));
 		setQueueSize(fringe.size());
 		
 		while (!(fringe.isEmpty())) {
-			Node node = fringe.remove();
+			//cutoff = false;
+			Node node =  fringe.remove();
+			SudokuBoard board = (SudokuBoard) node.getState();
+			
 			//sacar esto
 			System.gc(); 
-			
+
 			setQueueSize(fringe.size());
 			if (problem.isGoalState(node.getState())) {
 				setPathCost(node.getPathCost());
 				return SearchUtils.actionsFromNodes(node.getPathFromRoot());
 			}
-			addExpandedNodesToFringe(fringe, node, problem);
-			setQueueSize(fringe.size());
+			
+			//node.getState()
+			//if(!cutoff){
+				//listaCerrada.add(node);
+				addExpandedNodesToFringe(fringe, node, problem, listaCerrada);
+				
+				
+				
+				
+				setQueueSize(fringe.size());
+				
+			//}else{
+				//System.out.println("optimizo");
+			//}
+			
+			//System.out.printf("fringe = %d\n", fringe.size());
+			
+			
+			
 		}
 		return new ArrayList<String>();// Empty List indicates Failure
 	}
@@ -74,5 +100,12 @@ public abstract class QueueSearch extends NodeExpander {
 	}
 
 	public abstract void addExpandedNodesToFringe(NodeStore fringe, Node node,
-			Problem p);
+			Problem p, List<int [][]> listaCerrada);
+	
+	
+	
+	
+	
+	
+	
 }

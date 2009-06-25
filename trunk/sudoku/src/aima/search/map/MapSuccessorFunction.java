@@ -16,7 +16,7 @@ import aima.search.framework.SuccessorFunction;
  * @author Ciaran O'Reilly
  * 
  */
-public class MapSuccessorFunction implements SuccessorFunction {
+/*public class MapSuccessorFunction implements SuccessorFunction {
 
 	private Map map = null;
 
@@ -40,4 +40,4 @@ public class MapSuccessorFunction implements SuccessorFunction {
 
 		return successors;
 	}
-}
+}*/
