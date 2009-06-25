@@ -15,7 +15,7 @@ import aima.search.sudoku.SudokuBoard;;
  * 
  */
 public interface FitnessFunction {
-	Double getValue(String individual);
 	
-	Double getFitnessValue(SudokuBoard board);
+	double getValue(String individual);
+	
 }
