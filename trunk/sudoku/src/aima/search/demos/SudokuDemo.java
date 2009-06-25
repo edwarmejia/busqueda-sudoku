@@ -82,15 +82,15 @@ new int [][]{
 public class SudokuDemo {
 
 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
-			{0,0,0,0,0,6,7,8,0 },
-			{0,0,6,0,0,0,1,2,0 },
-			{0,0,9,0,2,3,0,5,0 },
-			{0,0,4,0,6,0,8,9,0 },
-			{0,6,5,8,9,0,2,1,0 },
-			{8,0,0,2,1,4,3,6,0 },
-			{0,0,0,0,4,2,9,7,0 },
-			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
-			{0,0,0,0,0,1,0,0,0 } } );
+			{0,0,0,4,5,6,7,8,9 },
+			{4,5,6,7,8,9,1,2,3 },
+			{7,8,9,1,2,3,4,5,6 },
+			{2,3,1,6,7,4,8,9,5 },
+			{8,7,5,9,1,2,3,6,4 },
+			{6,9,4,5,3,8,2,1,7 },
+			{3,1,7,2,6,5,9,4,8 },
+			{5,4,2,8,9,7,6,3,1 },//aca poner un 7
+			{9,6,8,3,4,1,5,7,2 } } );
 			
 	
  
@@ -164,8 +164,6 @@ public class SudokuDemo {
 			finiteAlphabet.add('5'); finiteAlphabet.add('6');
 			finiteAlphabet.add('7'); finiteAlphabet.add('8');
 			finiteAlphabet.add('9');			
-			
-			
 			
 			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
 			
