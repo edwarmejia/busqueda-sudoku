@@ -13,7 +13,7 @@ public class SudokuGoalTest implements GoalTest {
 
 	}
 	
-	public boolean isGoalState(int [][] boardCheck) {
+	public boolean isGoalBoard(int [][] boardCheck) {
 		board = new SudokuBoard(boardCheck);
 	
 		return (tableroSolucion());

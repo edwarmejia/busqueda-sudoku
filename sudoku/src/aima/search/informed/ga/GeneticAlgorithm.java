@@ -83,7 +83,7 @@ public class GeneticAlgorithm {
 			bestIndividual = ga(population, fitnessFn);
 			cnt++;
 			// until some individual is fit enough, or enough time has elapsed
-		} while (!goalTest.isGoalState(stringToBoard(bestIndividual)));
+		} while (!goalTest.isGoalBoard(stringToBoard(bestIndividual)));
 		setIterations(cnt);
 
 		// return the best individual in population, according to FITNESS-FN
@@ -122,17 +122,17 @@ public class GeneticAlgorithm {
 		char vector_char[] = new char [81];
 		int [][] board = new int[9][9];
 		
-		vector_char = individual.toCharArray();
-
-		
-		for (int i = 0 ; i < 9 ;  i=i+3)
-			for (int j = 0 ; j < 9 ;  j=j+3)
-				for (fila = i ; fila < i+3 ; fila++)
-					for (columna = j ; columna < j+3 ; columna++){
-						board[fila][columna] = Character.getNumericValue(vector_char[contador_cadena]);
-						contador_cadena++;
-					}
-		
+		if(individual != null){
+			vector_char = individual.toCharArray();
+			
+			for (int i = 0 ; i < 9 ;  i=i+3)
+				for (int j = 0 ; j < 9 ;  j=j+3)
+					for (fila = i ; fila < i+3 ; fila++)
+						for (columna = j ; columna < j+3 ; columna++){
+							board[fila][columna] = Character.getNumericValue(vector_char[contador_cadena]);
+							contador_cadena++;
+						}
+		}
 		return board;
 		
 	}
