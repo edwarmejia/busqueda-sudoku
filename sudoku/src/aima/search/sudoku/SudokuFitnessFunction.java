@@ -2,6 +2,9 @@ package aima.search.sudoku;
 
 import aima.search.informed.ga.FitnessFunction;
 
+
+
+//FITNESS FUNCTION PARA SUDOKU
 public class SudokuFitnessFunction implements FitnessFunction{
 
 	public static SudokuBoard board = new SudokuBoard();
@@ -16,7 +19,7 @@ public class SudokuFitnessFunction implements FitnessFunction{
 		stringABorard(individual);// se convierte el string a board	
 		valor_filas_y_columnas = filas_y_columnas();
 		valor_faltantes = numeros_faltantes();
-		fitness_int = valor_faltantes + valor_filas_y_columnas;
+		fitness_int = (valor_faltantes + valor_filas_y_columnas)*(-1);
 		
 		fitness  = (double)fitness_int;
 		
@@ -130,10 +133,10 @@ public class SudokuFitnessFunction implements FitnessFunction{
 	
 	public static void main(String[] args){
 		
-		String prueba = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
-		SudokuFitnessFunction prueba2 = new SudokuFitnessFunction();
+		//String prueba = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
+		//SudokuFitnessFunction prueba2 = new SudokuFitnessFunction();
 		
-		prueba2.getValue(prueba);
+		//prueba2.getValue(prueba);
 		
 		//stringABorard(prueba);
 		
