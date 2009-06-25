@@ -6,10 +6,16 @@ package aima.search.informed.ga;
  * evolved.
  */
 
+
+import aima.search.sudoku.SudokuBoard;;
+
+
 /**
  * @author Ciaran O'Reilly
  * 
  */
 public interface FitnessFunction {
 	Double getValue(String individual);
+	
+	Double getFitnessValue(SudokuBoard board);
 }
