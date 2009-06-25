@@ -1,6 +1,7 @@
 package aima.search.demos;
 
 
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -153,23 +154,24 @@ public class SudokuDemo {
 	private static void sudokuAG(){
 		System.out.println("\nSudokuDemo AG -->");
 		try {
+			Set<Character> finiteAlphabet = new HashSet<Character>();
+			finiteAlphabet.add('1'); finiteAlphabet.add('2');
+			finiteAlphabet.add('3'); finiteAlphabet.add('4');
+			finiteAlphabet.add('5'); finiteAlphabet.add('6');
+			finiteAlphabet.add('7'); finiteAlphabet.add('8');
+			finiteAlphabet.add('9');			
+			
+			
+			
 			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
 			
+			GeneticAlgorithm search = new GeneticAlgorithm(newBoard.getBoard().length, 
+										finiteAlphabet , 0.5 );
+
+			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
+										fitnessFn, new SudokuGoalTest());
 			
-			System.out.printf("%d", newBoard.getBoard().length);
-			
-			newBoard.initPopulation(newBoard);
-			
-			/*GeneticAlgorithm search = new GeneticAlgorithm(
-										newBoard.getBoard().length, 
-										new ,
-										 
-										 0,5
-										);
-			
-			String bestIndividual = 
-				search.geneticAlgorithm(population, fitnessFn, goalTest);*/
-			
+			System.out.printf("bestIndividual: %s", "ho");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
