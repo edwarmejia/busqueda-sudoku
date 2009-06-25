@@ -1,6 +1,8 @@
 package aima.search.demos;
 
+
 import aima.search.framework.GraphSearch;
+import aima.search.framework.TreeSearch;
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
@@ -10,33 +12,89 @@ import aima.search.sudoku.SudokuBoard;
 import aima.search.sudoku.SudokuGoalTest;
 import aima.search.sudoku.SudokuSuccessorFunction;
 import aima.search.uninformed.DepthFirstSearch;
+import aima.search.uninformed.IterativeDeepeningSearch;
+/*
+ * 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
+		{0,0,0,0,0,6,7,8,9 }, 
+		{4,5,6,0,0,9,1,2,3 },
+		{0,8,9,1,2,3,4,5,6 }, 
+		{0,0,4,3,6,5,8,9,7 },
+		{0,6,5,8,9,7,2,1,4 },
+		{8,9,0,2,1,4,3,6,5 },
+		{5,0,1,6,4,2,9,7,8 },
+		{6,4,2,9,7,8,5,3,1 },//aca poner un 7
+		{9,0,8,5,0,1,6,4,2 } } );
+
+		
+new int [][]{
+			{0,0,0,0,0,6,7,8,9 },
+			{4,5,6,0,0,9,1,2,3 },
+			{0,8,9,1,2,3,4,5,6 },
+			{0,0,4,3,6,5,8,9,7 },
+			{0,6,5,8,9,7,2,1,4 },
+			{8,9,0,2,1,4,3,6,5 },
+			{5,0,1,6,4,2,9,7,8 },
+			{6,4,2,9,7,8,5,3,1 },//aca poner un 7
+			{9,0,0,0,0,1,6,4,2 } } );
+					
+
+resuelto
+
+			{1,2,3,4,5,6,7,8,9 },
+			{4,5,6,7,8,9,1,2,3 },
+			{7,8,9,1,2,3,4,5,6 },
+			{2,3,1,6,7,4,8,9,5 },
+			{8,7,5,9,1,2,3,6,4 },
+			{6,9,4,5,3,8,2,1,7 },
+			{3,1,7,2,6,5,9,4,8 },
+			{5,4,2,8,9,7,6,3,1 },//aca poner un 7
+			{9,6,8,3,4,1,5,7,2 } } );
+
+
+muuuuchos ceroos ya - resuelve
+new int [][]{
+			{0,0,0,0,0,6,7,8,0 },
+			{0,0,6,0,0,0,1,2,0 },
+			{0,0,9,0,2,3,0,5,0 },
+			{0,0,4,0,6,0,8,9,0 },
+			{0,6,5,8,9,0,2,1,0 },
+			{8,0,0,2,1,4,3,6,0 },
+			{0,0,0,0,4,2,9,7,0 },
+			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
+			{0,0,0,0,0,1,0,0,0 } } );
+			
+					
+					
+		
+ */
+
 
 public class SudokuDemo {
 
-	static SudokuBoard tableroComplejo = new SudokuBoard(new int[][] {
-			{ 0, 0, 3, 4, 5, 6, 7, 8, 0 },
-			{ 4, 5, 0, 7,8,9,1,2,3 },
-			{ 7, 0, 0, 1,2,0,4,5,6},
-			{ 0, 0, 0,3,6,5,8,0,7 },
-			{ 3, 0, 5,8,9,7,0,1,4 },
-			{ 8, 0, 7,0,1,4,0,6,5},
-			{ 5, 0, 1,0,4,2,0,7,8},
-			{ 6, 0, 2,0,7,0,0,0,1 },
-			{ 9, 0, 8,0,3,1,0,4,2 } });
-
-
+	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
+			{0,0,0,0,0,6,7,8,0 },
+			{0,0,6,0,0,0,1,2,0 },
+			{0,0,9,0,2,3,0,5,0 },
+			{0,0,4,0,6,0,8,9,0 },
+			{0,6,5,8,9,0,2,1,0 },
+			{8,0,0,2,1,4,3,6,0 },
+			{0,0,0,0,4,2,9,7,0 },
+			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
+			{0,0,0,0,0,1,0,0,0 } } );
+			
 	
 	
+ 
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
-			{ 0, 0, 6, 0, 9, 8, 4, 0, 0 }, 
-			{ 8, 9, 0, 4, 0, 1, 0, 0, 0 },
-			{ 0, 1, 5, 0, 3, 0, 9, 0, 0 },
-			{ 9, 5, 0, 0, 2, 0, 3, 0, 1 },
-			{ 0, 7, 0, 0, 0, 0, 0, 8, 0 },
-			{ 2, 0, 1, 0, 8, 0, 0, 5, 6 },
-			{ 0, 0, 4, 0, 7, 0, 6, 9, 0 },
-			{ 0, 0, 0, 6, 0, 4, 0, 2, 3 },
-			{ 0, 0, 2, 3, 1, 0, 8, 0, 0 } });
+			{ 0, 0, 0, 0, 9, 0, 0, 0, 0 }, 
+			{ 0, 0, 0, 4, 0, 0, 0, 0, 0 },
+			{ 0, 0, 5, 0, 3, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 6 },
+			{ 0, 0, 0, 0, 7, 0, 0, 0, 0 },
+			{ 0, 0, 0, 6, 0, 4, 0, 0, 0 },
+			{ 0, 0, 0, 3, 1, 0, 0, 0, 0 } });
 
 	public static void main(String[] args) {
 
@@ -44,10 +102,10 @@ public class SudokuDemo {
 	}
 
 	private static void newSudokuDemo() {
-		//sudokuWithDepthFirstSearch();
-		sudokuAStarDemo();
+		sudokuWithDepthFirstSearch();
+		//sudokuIDLSDemo(tableroComplejo, true);
+		 //sudokuAStarDemo();
 		// if(tableroComplejo)
-
 		// printBoard(tableroComplejo);
 
 	}
@@ -59,12 +117,11 @@ public class SudokuDemo {
 
 			Problem problem = new Problem(newBoard,
 					new SudokuSuccessorFunction(), new SudokuGoalTest());
-			Search search = new DepthFirstSearch(new GraphSearch());
+			Search search = new DepthFirstSearch(new TreeSearch());
 			SearchAgent agent = new SearchAgent(problem, search);
 
 			// printActions(agent.getActions());
 			// printBoard(newBoard);
-
 			// printInstrumentation(agent.getInstrumentation());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +136,7 @@ public class SudokuDemo {
 					new SudokuSuccessorFunction(), new SudokuGoalTest(),
 					new EmptyBoxHeuristicFunction());
 
-			Search search = new AStarSearch(new GraphSearch());
+			Search search = new AStarSearch(new TreeSearch());
 			SearchAgent agent = new SearchAgent(problem, search);
 			// printActions(agent.getActions());
 			// printInstrumentation(agent.getInstrumentation());
@@ -87,4 +144,52 @@ public class SudokuDemo {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	private static void sudokuIDLSDemo(SudokuBoard tablero,
+			boolean tipo_lista_cerrada) {
+	
+		if (tipo_lista_cerrada)
+			System.out
+			.println("\n SudokuDemo Iterative DLS con listas cerradas -->");			
+		else
+			System.out.println("\n SudokuDemo Iterative DLS -->");			
+	
+		try {
+			Problem problem = new Problem(tablero,
+					new SudokuSuccessorFunction(),
+					new SudokuGoalTest());
+			Search search = new IterativeDeepeningSearch(tipo_lista_cerrada);
+	
+			SearchAgent agent = new SearchAgent(problem, search);
+			String resultado = agent.getInstrumentation().getProperty(
+					"pathCost");
+			//if (!resultado.equals("0"))
+				//porcentaje_IDLS++;
+	
+			 //printActions(agent.getActions());
+			 //printInstrumentation(agent.getInstrumentation());
+			 //Instrumentation = new 
+			// System.out.println("Final State=\n" +
+			//search.getLastSearchState());
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -1,5 +1,6 @@
 package aima.search.uninformed;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import aima.search.framework.Metrics;
@@ -18,7 +19,6 @@ public class DepthFirstSearch implements Search {
 	QueueSearch search;
 
 	public DepthFirstSearch(QueueSearch search) {
-
 		this.search = search;
 
 	}
@@ -27,9 +27,13 @@ public class DepthFirstSearch implements Search {
 
 		return search.search(p, new LIFONodeStore());
 	}
-
+	//wsdkfaslkfdhaklsjdhflahslfhasdklj
+	//@Override
 	public Metrics getMetrics() {
 		return search.getMetrics();
 	}
+	
+
+	
 
 }

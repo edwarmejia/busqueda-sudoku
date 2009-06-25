@@ -1,5 +1,6 @@
 package aima.search.framework;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,18 +48,18 @@ public class GraphSearch extends QueueSearch {
 
 	@Override
 	public void addExpandedNodesToFringe(NodeStore fringe, Node node,
-			Problem problem) {
-
+			Problem problem, List<int [][]> listaCerrada) {
+		
+		List<Node> nodos = new ArrayList<Node>();
 		// if STATE[node] is not in closed then
 		if (!(alreadySeen(node))) {
 			// add STATE[node] to closed
 			closed.add(node.getState());
 			// fringe <- INSERT-ALL(EXPAND(node, problem), fringe)
-			fringe.add(expandNode(node, problem));
-			if(fringe.size() > 40000){
-				System.out.println("gomeo\n");
-				System.out.print(fringe.size());
+			if(!(nodos = expandNode(node, problem, listaCerrada)).isEmpty()){
+				fringe.add(nodos);
 			}
+			//fringe.add(expandNode(node, problem, listaCerrada));
 			//System.out.print(fringe.size());
 			/*try {
 				System.in.read();

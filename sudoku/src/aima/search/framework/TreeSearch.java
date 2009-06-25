@@ -1,5 +1,7 @@
 package aima.search.framework;
 
+import java.util.List;
+
 /**
  * Artificial Intelligence A Modern Approach (2nd Edition): Figure 3.7, page 70.
  * <code>
@@ -54,8 +56,10 @@ public class TreeSearch extends QueueSearch {
 
 	@Override
 	public void addExpandedNodesToFringe(NodeStore fringe, Node node,
-			Problem problem) {
-		fringe.add(expandNode(node, problem));
+			Problem problem, List<int [][]> listaCerrada) {
+		
+		
+		fringe.add(expandNode(node, problem, listaCerrada));
 	}
 
 }

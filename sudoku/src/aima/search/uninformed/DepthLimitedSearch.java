@@ -42,18 +42,18 @@ public class DepthLimitedSearch extends NodeExpander implements Search {
 	private static String PATH_COST = "pathCost";
 
 	private final int limit;
-	private final int lista;
+	private final boolean lista_cerrada;
 
 	public static List<Node> listaCerrada = new ArrayList<Node>();
 
 	public DepthLimitedSearch(int limit) {
 		this.limit = limit;
-		this.lista = 0;
+		this.lista_cerrada = false;
 	}
 
-	public DepthLimitedSearch(int limit, int lista) {
+	public DepthLimitedSearch(int limit, boolean lista) {
 		this.limit = limit;
-		this.lista = lista;
+		this.lista_cerrada = lista;
 
 	}
 
@@ -81,20 +81,15 @@ public class DepthLimitedSearch extends NodeExpander implements Search {
 		} else if (node.getDepth() == limit) {
 			return createCutOffResult();
 		} else {
-			// si la bandera de listas cerradas esta actividada
-			if (lista == 1) {
-				if (node.getDepth() != 0) {// si no se esta analizando la raiz
-					// busca q el nodo a expandir no este en la lista cerrada
+			if (lista_cerrada) {
+				if (node.getDepth() != 0) {
 					for (int k = 0; k < listaCerrada.size(); k++) {
-						if (node.getState().equals(
-								listaCerrada.get(k).getState())) {
-							// si el nodo ya esta en la lista realiza un corte
-							return createCutOffResult();
+						if (node.getState().equals(listaCerrada.get(k).getState())) {
+							return createCutOffResult();// si ya esta en la lista hace un corte
 						}
 					}
 				}
-				listaCerrada.add(node);// agrega el nodo q se expande a la
-				// lista cerrada
+				listaCerrada.add(node);
 			}
 			// else for each successor in EXPAND(node, problem) do
 			List children = expandNode(node, problem);

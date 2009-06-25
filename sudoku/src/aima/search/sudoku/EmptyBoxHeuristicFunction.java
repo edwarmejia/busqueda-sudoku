@@ -6,21 +6,29 @@ public class EmptyBoxHeuristicFunction implements HeuristicFunction {
 	public double getHeuristicValue(Object state) {
 		SudokuBoard board = (SudokuBoard) state;
 
-		return getNumberOfEmptyBoxs(board);
+		return h(board);
 
 	}
 
-	private int getNumberOfEmptyBoxs(SudokuBoard board) {
-		int numberOfEmptyBoxs = 0;
-
+	private double h(SudokuBoard board) {
+		double valorH = 0;
+		double emptySlots = 0;
+		
 		for (int i = 0; i < board.getBoard().length; i++) {
 			for (int j = 0; j < board.getBoard().length; j++) {
-				if (board.getBoard()[i][j] == 0)
-					numberOfEmptyBoxs++;
+				if (board.getBoard()[i][j] == 0){
+					emptySlots++;
+					for(int k = 0; k < board.getBoard().length; k++){
+						if(board.ubicarNumero(i, j, k)){
+							valorH++;
+						}
+					}
+					
+				}
 			}
 		}
 
-		return numberOfEmptyBoxs;
+		return valorH + emptySlots;
 	}
 
 }
