@@ -12,6 +12,14 @@ public class SudokuGoalTest implements GoalTest {
 		return (tableroSolucion());
 
 	}
+	
+	public boolean isGoalState(int [][] boardCheck) {
+		board = new SudokuBoard(boardCheck);
+	
+		return (tableroSolucion());
+
+	}
+	
 
 	private boolean tableroSolucion() {
 
@@ -37,4 +45,12 @@ public class SudokuGoalTest implements GoalTest {
 		board.printBoard();
 		return true;
 	}
+	
+	
+
+	
+	
+	
+	
+	
 }
