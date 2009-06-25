@@ -14,10 +14,15 @@ import aima.search.informed.AStarSearch;
 import aima.search.informed.ga.GeneticAlgorithm;
 import aima.search.sudoku.EmptyBoxHeuristicFunction;
 import aima.search.sudoku.SudokuBoard;
+import aima.search.sudoku.SudokuFitnessFunction;
 import aima.search.sudoku.SudokuGoalTest;
 import aima.search.sudoku.SudokuSuccessorFunction;
 import aima.search.uninformed.DepthFirstSearch;
 import aima.search.uninformed.IterativeDeepeningSearch;
+import aima.search.informed.ga.FitnessFunction;
+
+
+
 /*
  * 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
 		{0,0,0,0,0,6,7,8,9 }, 
@@ -87,7 +92,6 @@ public class SudokuDemo {
 			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
 			{0,0,0,0,0,1,0,0,0 } } );
 			
-	
 	
  
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
@@ -169,9 +173,10 @@ public class SudokuDemo {
 										finiteAlphabet , 0.5 );
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
-										fitnessFn, new SudokuGoalTest());
+										new SudokuFitnessFunction(), new SudokuGoalTest());
 			
-			System.out.printf("bestIndividual: %s", "ho");
+			System.out.printf("bestIndividual: %s", bestIndividual);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

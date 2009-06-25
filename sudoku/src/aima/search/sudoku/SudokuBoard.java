@@ -108,7 +108,7 @@ public class SudokuBoard {
 			if(!string.isEmpty())
 				population.add(string);
 				
-		}while(population.size() < 500);
+		}while(population.size() < 100);
 		
 		return population;
 	}

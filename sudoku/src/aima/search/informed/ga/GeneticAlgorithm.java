@@ -83,7 +83,7 @@ public class GeneticAlgorithm {
 			bestIndividual = ga(population, fitnessFn);
 			cnt++;
 			// until some individual is fit enough, or enough time has elapsed
-		} while (!goalTest.isGoalState(bestIndividual));
+		} while (!goalTest.isGoalState(stringToBoard(bestIndividual)));
 		setIterations(cnt);
 
 		// return the best individual in population, according to FITNESS-FN
@@ -112,6 +112,35 @@ public class GeneticAlgorithm {
 		return bestIndividual;
 	}
 
+	
+	//convierte el string al tablero de sudoku
+	private static int [][] stringToBoard(String individual){
+		
+
+		int contador_cadena = 0; 
+		int columna, fila;
+		char vector_char[] = new char [81];
+		int [][] board = new int[9][9];
+		
+		vector_char = individual.toCharArray();
+
+		
+		for (int i = 0 ; i < 9 ;  i=i+3)
+			for (int j = 0 ; j < 9 ;  j=j+3)
+				for (fila = i ; fila < i+3 ; fila++)
+					for (columna = j ; columna < j+3 ; columna++){
+						board[fila][columna] = Character.getNumericValue(vector_char[contador_cadena]);
+						contador_cadena++;
+					}
+		
+		return board;
+		
+	}
+	
+	
+	
+	
+	
 	public void clearInstrumentation() {
 		setPopulationSize(0);
 		setIterations(0);
@@ -165,7 +194,7 @@ public class GeneticAlgorithm {
 			String child = reproduce(x, y);
 			// if (small random probability) then child <- MUTATE(child)
 			if (random.nextDouble() <= this.mutationProbability) {
-				child = mutate(child);
+			//	child = mutate(child);
 			}
 			// add child to new_population
 			newPopulation.add(child);
@@ -216,14 +245,62 @@ public class GeneticAlgorithm {
 	// function REPRODUCE(x, y) returns an individual
 	// inputs: x, y, parent individuals
 	private String reproduce(String x, String y) {
-		// n <- LENGTH(x)
-		// Note: this is = this.individualLength
-		// c <- random number from 1 to n
-		int c = randomOffset(individualLength);
-		// return APPEND(SUBSTRING(x, 1, c), SUBSTRING(y, c+1, n))
-		return x.substring(0, c) + y.substring(c);
+		//System.out.println(x);
+        //System.out.println(y);
+        char xArray[] = new char [81];
+        char yArray[] = new char [81];
+        char arrayResultante[] = new char[81];
+        String stringResultante = new String();
+        
+
+        xArray = x.toCharArray();
+        yArray = y.toCharArray();
+        
+        //System.out.println(xArray);
+        //System.out.println(xArray);
+        
+        //generar un numero aleatorio para el punto de cruce
+        // solo pueden ser en los puntos de corte validos
+        
+        int c = randomCruce(individualLength);
+        
+        //System.out.printf("punto de cruce %d\n", c);
+        
+        // realizar el cruce en el punto de cruce
+        for (int i = 0 ; i < 81 ; i++){
+                if (i <= c )
+                        arrayResultante[i] = xArray[i];
+                else
+                        arrayResultante[i] = yArray[i];
+        }
+        
+        
+        //System.out.println(arrayResultante);
+        //convierte a String lo que se obtuvo en el cruce
+        stringResultante = String.copyValueOf(arrayResultante);
+        
+        //System.out.println(stringResultante);
+        
+        return stringResultante;
+
+
 	}
 
+	
+    private int randomCruce(int length) {
+        int randomN;
+        randomN = 7;
+        int vector[] = {8,17,26,35,44,53,62,71};
+                 randomN = random.nextInt(8);
+                
+        
+        return vector[randomN] ;
+    }
+
+
+	
+	
+	
 	private String mutate(String individual) {
 		StringBuffer mutInd = new StringBuffer(individual);
 
