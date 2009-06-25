@@ -1,12 +1,15 @@
 package aima.search.demos;
 
 
+import java.util.Set;
+
 import aima.search.framework.GraphSearch;
 import aima.search.framework.TreeSearch;
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.AStarSearch;
+import aima.search.informed.ga.GeneticAlgorithm;
 import aima.search.sudoku.EmptyBoxHeuristicFunction;
 import aima.search.sudoku.SudokuBoard;
 import aima.search.sudoku.SudokuGoalTest;
@@ -145,9 +148,40 @@ public class SudokuDemo {
 		}
 	}
 	
+	private static void sudokuAG(){
+		System.out.println("\nSudokuDemo AG -->");
+		try {
+			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
+			Set<Character> finiteAlphabet = null;
+			
+			finiteAlphabet.add('0');
+			finiteAlphabet.add('1');
+			finiteAlphabet.add('2');
+			finiteAlphabet.add('3');
+			finiteAlphabet.add('4');
+			finiteAlphabet.add('5');
+			finiteAlphabet.add('6');
+			finiteAlphabet.add('7');
+			finiteAlphabet.add('8');
+			finiteAlphabet.add('9');
+			
+			/*GeneticAlgorithm search = new GeneticAlgorithm(
+										newBoard.getBoard().length, 
+										new ,
+										 
+										 0,5
+										);
+			
+			String bestIndividual = 
+				search.geneticAlgorithm(population, fitnessFn, goalTest);*/
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
 	
-	
-	private static void sudokuIDLSDemo(SudokuBoard tablero,
+	/*private static void sudokuIDLSDemo(SudokuBoard tablero,
 			boolean tipo_lista_cerrada) {
 	
 		if (tipo_lista_cerrada)
@@ -178,7 +212,7 @@ public class SudokuDemo {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 	
 	
 	
