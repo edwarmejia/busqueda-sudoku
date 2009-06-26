@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.Random;
 
 import aima.search.framework.Successor;
+import aima.util.Factorial;
 
 
 public class SudokuBoard {
@@ -72,12 +73,32 @@ public class SudokuBoard {
 		}
 		return false;
 	}
+	
+	private int obtenerCantVacios(int [][] board){
+		int cant = 0;
+		
+		for(int i = 0; i < 9; i++)
+			for(int j = 0; j < 9; j++)
+				if(board[i][j] == 0)
+					cant++;
+					
+		return cant;
+	}
 	public Set<String> initPopulation(SudokuBoard board){
 
 		Set<String> population = new HashSet<String>();
 		Random randomNumbers = new Random();
 		
 		int [][] newBoard = new int[9][9];
+		int cantVacios = 0;
+		int maxPopulation = 0;
+		
+		cantVacios = obtenerCantVacios(board.getBoard());
+		if(cantVacios <= 5){
+			maxPopulation = calculatePopulationMax(board.getBoard());
+		}else{
+			maxPopulation = 100;
+		}
 		
 		do{
 			/*Reseteamos la matriz con los valores del tablero inicial*/
@@ -108,10 +129,38 @@ public class SudokuBoard {
 			if(!string.isEmpty())
 				population.add(string);
 				
-		}while(population.size() < 6);
+		}while(population.size() < maxPopulation);
 		
 		return population;
 	}
+	
+	public static int calculatePopulationMax(int [][] board){
+		int columna, fila;
+		long slotsVacios = 0;
+		long popMax = 0;
+		
+		/*Recorremos por region y calculamos la cantidad de posibilidades
+		 * de ubicar los numeros en cada region*/
+		for (int i = 0 ; i < 9 ;  i=i+3){
+			for (int j = 0 ; j < 9 ;  j=j+3){
+				for (fila = i ; fila < i+3 ; fila++){
+					for (columna = j ; columna < j+3 ; columna++){
+							if(board[fila][columna] == 0)
+								slotsVacios++;
+					}
+				}
+				if(slotsVacios != 0)
+					popMax = Factorial.factorial(slotsVacios);
+				slotsVacios = 0;
+			}
+		}
+		
+		
+		return (int)popMax;
+	}
+	
+	 
+	 
 	
 	private String boardToSting(int [][] board){
 		String string = new String();

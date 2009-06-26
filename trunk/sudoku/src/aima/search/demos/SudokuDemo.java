@@ -174,7 +174,8 @@ public class SudokuDemo {
 										new SudokuFitnessFunction(), new SudokuGoalTest());
 			
 			System.out.printf("bestIndividual: %s", bestIndividual);
-			
+	
+//			System.out.printf("popMax : %d", SudokuBoard.calculatePopulationMax(newBoard.getBoard()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

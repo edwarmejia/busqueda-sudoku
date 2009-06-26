@@ -19,7 +19,7 @@ public class SudokuFitnessFunction implements FitnessFunction{
 		stringABorard(individual);// se convierte el string a board	
 		valor_filas_y_columnas = filas_y_columnas();
 		valor_faltantes = numeros_faltantes();
-		fitness_int = (valor_faltantes + valor_filas_y_columnas)*(-1);
+		fitness_int = 1000 -(valor_faltantes + valor_filas_y_columnas)*(+1);
 		
 		fitness  = (double)fitness_int;
 		
@@ -131,7 +131,7 @@ public class SudokuFitnessFunction implements FitnessFunction{
 	}
 	
 	
-	public static void main(String[] args){
+/*	public static void main(String[] args){
 		
 		//String prueba = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
 		//SudokuFitnessFunction prueba2 = new SudokuFitnessFunction();
@@ -141,7 +141,7 @@ public class SudokuFitnessFunction implements FitnessFunction{
 		//stringABorard(prueba);
 		
 		
-	}
+	}*/
 	
 }
 
