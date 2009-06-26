@@ -92,15 +92,16 @@ public class SudokuBoard {
 		int [][] newBoard = new int[9][9];
 		int cantVacios = 0;
 		int maxPopulation = 0;
-		
+		int contador = 0;
 		cantVacios = obtenerCantVacios(board.getBoard());
 		if(cantVacios <= 5){
 			maxPopulation = calculatePopulationMax(board.getBoard());
 		}else{
-			maxPopulation = 500;
+			maxPopulation = 220;
 		}
 		
 		do{
+			contador++;
 			/*Reseteamos la matriz con los valores del tablero inicial*/
 			for(int i = 0; i < 9; i++){
 				for(int j = 0; j < 9; j++){
@@ -129,7 +130,7 @@ public class SudokuBoard {
 			if(!string.isEmpty())
 				population.add(string);
 				
-		}while(population.size() < maxPopulation);
+		}while( (population.size() < maxPopulation) && (contador < 200) );
 		
 		return population;
 	}

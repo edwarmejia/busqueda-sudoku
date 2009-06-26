@@ -18,8 +18,11 @@ public class DepthFirstSearch implements Search {
 
 	QueueSearch search;
 
+	public static int cantEvaluaciones;
+	
 	public DepthFirstSearch(QueueSearch search) {
 		this.search = search;
+		this.cantEvaluaciones = 0;
 
 	}
 

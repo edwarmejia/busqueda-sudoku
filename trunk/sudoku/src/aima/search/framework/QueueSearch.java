@@ -9,6 +9,7 @@ import java.util.List;
 import java.io.IOException;
 
 import aima.search.sudoku.SudokuBoard;
+import aima.search.uninformed.DepthFirstSearch;
 /**
  * @author Ravi Mohan
  * 
@@ -39,6 +40,9 @@ public abstract class QueueSearch extends NodeExpander {
 			System.gc(); 
 
 			setQueueSize(fringe.size());
+			/*Aqui controlamos la cantidad de evaluaciones que hace el algoritmo,
+			 * es decir cada vez que pregunta "is a goal state?"               */
+			DepthFirstSearch.cantEvaluaciones++;
 			if (problem.isGoalState(node.getState())) {
 				setPathCost(node.getPathCost());
 				return SearchUtils.actionsFromNodes(node.getPathFromRoot());
