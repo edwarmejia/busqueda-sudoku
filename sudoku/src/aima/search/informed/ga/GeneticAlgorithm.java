@@ -270,18 +270,41 @@ public class GeneticAlgorithm {
         // solo pueden ser en los puntos de corte validos
         
         int c = randomCruce(individualLength);
+        int d = randomCruce(individualLength);
+        while(d == c){
+        	d = randomCruce(individualLength);
+        }
         
         //System.out.printf("punto de cruce %d\n", c);
         
         // realizar el cruce en el punto de cruce
-        for (int i = 0 ; i < 81 ; i++){
-                if (i <= c )
+        
+        if (d > c){
+	        for (int i = 0 ; i < 81 ; i++){
+	                if (i <= c )
+	                        arrayResultante[i] = xArray[i];
+	                else {
+	                	if(i <= d)
+	                        arrayResultante[i] = yArray[i];
+	                	else
+	                		arrayResultante[i] = xArray[i];
+	                }		
+	        }
+        }
+        else{
+	        for (int i = 0 ; i < 81 ; i++){
+                if (i <= d )
                         arrayResultante[i] = xArray[i];
-                else
+                else {
+                	if(i <= c)
                         arrayResultante[i] = yArray[i];
+                	else
+                		arrayResultante[i] = xArray[i];
+                }		
+	        }
         }
         
-        
+        //df
         //System.out.println(arrayResultante);
         //convierte a String lo que se obtuvo en el cruce
         stringResultante = String.copyValueOf(arrayResultante);
@@ -354,7 +377,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9)]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==1){
@@ -365,7 +388,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==2){
@@ -376,7 +399,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==3){
@@ -387,7 +410,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==4){
@@ -398,7 +421,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==5){
@@ -409,7 +432,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==6){
@@ -420,7 +443,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==7){
@@ -431,7 +454,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
                                  }
                          }
                          if (randomRegion==8){
@@ -442,7 +465,7 @@ public class GeneticAlgorithm {
                                  if (cont_vacios >= 2){
                                          encontro_region = 1;
                                          while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0);
+                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
                                  }
 
                          }
