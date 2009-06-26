@@ -24,7 +24,7 @@ public class SudokuBoard {
 		return board;
 	}
 
-	int[][] board;
+	public int[][] board;
 	
 	static int[][][] posibles;
 
@@ -97,7 +97,7 @@ public class SudokuBoard {
 		if(cantVacios <= 5){
 			maxPopulation = calculatePopulationMax(board.getBoard());
 		}else{
-			maxPopulation = 100;
+			maxPopulation = 500;
 		}
 		
 		do{

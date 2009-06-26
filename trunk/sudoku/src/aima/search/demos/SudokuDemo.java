@@ -82,15 +82,16 @@ new int [][]{
 public class SudokuDemo {
 
 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
-			{0,0,0,4,5,6,7,8,9 },
-			{4,5,6,7,8,9,1,2,3 },
-			{7,8,9,1,2,3,4,5,6 },
-			{2,3,1,6,7,4,8,9,5 },
-			{8,7,5,9,1,2,3,6,4 },
-			{6,9,4,5,3,8,2,1,7 },
-			{3,1,7,2,6,5,9,4,8 },
-			{5,4,2,8,9,7,6,3,1 },//aca poner un 7
-			{9,6,8,3,4,1,5,7,2 } } );
+			{0,0,0,0,0,6,7,8,0 },
+			{0,0,6,0,0,0,1,2,0 },
+			{0,0,9,0,2,3,0,5,0 },
+			{0,0,4,0,6,0,8,9,0 },
+			{0,6,5,8,9,0,2,1,0 },
+			{8,0,0,2,1,4,3,6,0 },
+			{0,0,0,0,4,2,9,7,0 },
+			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
+			{0,0,0,0,0,1,0,0,0 } } );
+
 			
 	
  
@@ -158,6 +159,8 @@ public class SudokuDemo {
 	private static void sudokuAG(){
 		System.out.println("\nSudokuDemo AG -->");
 		try {
+			int helpArray[] = new int [81];
+			
 			Set<Character> finiteAlphabet = new HashSet<Character>();
 			finiteAlphabet.add('1'); finiteAlphabet.add('2');
 			finiteAlphabet.add('3'); finiteAlphabet.add('4');
@@ -166,9 +169,11 @@ public class SudokuDemo {
 			finiteAlphabet.add('9');			
 			
 			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
+
+			helpArray = boardToArray(newBoard);
 			
 			GeneticAlgorithm search = new GeneticAlgorithm(newBoard.getBoard().length, 
-										finiteAlphabet , 0.5 );
+										finiteAlphabet , 0.75 ,helpArray);
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
 										new SudokuFitnessFunction(), new SudokuGoalTest());
@@ -181,6 +186,32 @@ public class SudokuDemo {
 			e.printStackTrace();
 		}		
 	}
+	
+	
+	
+	
+    public static int[] boardToArray(SudokuBoard board){
+            
+            int array[] = new int[81];
+            int contador = 0;
+            int fila, columna;
+            
+            for (int i = 0 ; i < 9 ;  i=i+3)
+                    for (int j = 0 ; j < 9 ;  j=j+3)
+                            for (fila = i ; fila < i+3 ; fila++)
+                                    for (columna = j ; columna < j+3 ; columna++){
+                                            array[contador] = board.board[fila][columna];
+                                            contador++;
+                                    }
+            
+            return array;
+            
+    }
+	  
+
+	
+	
+	
 	
 	/*private static void sudokuIDLSDemo(SudokuBoard tablero,
 			boolean tipo_lista_cerrada) {
