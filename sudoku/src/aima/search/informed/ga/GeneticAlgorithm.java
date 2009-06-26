@@ -56,9 +56,14 @@ public class GeneticAlgorithm {
 	private final Character[] finiteAlphabet;
 	private final double mutationProbability;
 	private final Random random = new Random();
-
+	//
+	int helpArray[] = new int[81];
+     
+	
+	
 	public GeneticAlgorithm(int individualLength,
-			Set<Character> finiteAlphabet, double mutationProbability) {
+			Set<Character> finiteAlphabet, double mutationProbability, int[] helpArrayp) {
+		this.helpArray = helpArrayp;
 		this.individualLength = individualLength;
 		this.finiteAlphabet = finiteAlphabet
 				.toArray(new Character[finiteAlphabet.size()]);
@@ -194,7 +199,7 @@ public class GeneticAlgorithm {
 			String child = reproduce(x, y);
 			// if (small random probability) then child <- MUTATE(child)
 			if (random.nextDouble() <= this.mutationProbability) {
-			//	child = mutate(child);
+				child = mutate(child);
 			}
 			// add child to new_population
 			newPopulation.add(child);
@@ -302,14 +307,38 @@ public class GeneticAlgorithm {
 	
 	
 	private String mutate(String individual) {
-		StringBuffer mutInd = new StringBuffer(individual);
+		 int randomM;
+         
+         int casilla_1, casilla_2;
+         char individualArray[] = new char[81];
+         char aux;
+         String string_mutado;
+         
+         while ((helpArray[casilla_1 = random.nextInt(81)]) != 0);
+         while ((helpArray[casilla_2 = random.nextInt(81)]) != 0);
+         
+         individualArray = individual.toCharArray();
 
-		int posOffset = randomOffset(individualLength);
-		int charOffset = randomOffset(finiteAlphabet.length);
+         //se realiza la mutacion
+         aux = individualArray[casilla_1];
+         individualArray[casilla_1] = individualArray[casilla_2];
+         individualArray[casilla_2] = aux;
+         
+                 
+         string_mutado = String.copyValueOf(individualArray);
+         
+         return string_mutado;
+         /*
+         StringBuffer mutInd = new StringBuffer(individual);
 
-		mutInd.setCharAt(posOffset, finiteAlphabet[charOffset]);
+         int posOffset = randomOffset(individualLength);
+         int charOffset = randomOffset(finiteAlphabet.length);
 
-		return mutInd.toString();
+         mutInd.setCharAt(posOffset, finiteAlphabet[charOffset]);
+
+         return mutInd.toString();*/
+
+
 	}
 
 	private String retrieveBestIndividual(Set<String> population,
