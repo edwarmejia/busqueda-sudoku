@@ -91,6 +91,20 @@ new int [][]{
 			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
 			{0,0,0,0,0,1,0,0,0 } } );
 			
+			
+			
+			
+ESTE TIENE QUE RESOLVER SI O SI
+new int [][]{
+			{0,0,0,3,6,0,5,0,0},
+			{3,0,5,8,0,0,0,0,4},
+			{1,0,4,7,0,5,2,0,0},
+			{4,1,0,0,2,8,7,0,0},
+			{0,0,0,4,3,0,0,8,9},
+			{0,3,0,0,5,0,0,0,0},
+			{6,0,8,0,0,0,3,0,2},
+			{9,2,0,6,4,3,8,0,7},
+			{7,5,0,0,8,0,6,0,0}  });			
 					
 					
 		
@@ -100,16 +114,17 @@ new int [][]{
 public class SudokuDemo {
 
 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
-			{0,0,6,0,9,8,4,0,0},
-			{8,9,0,4,0,1,0,0,0},
-			{0,1,5,0,3,0,9,0,0},
-			{9,5,0,0,2,0,3,0,1},
-			{0,7,0,0,0,0,0,8,0},
-			{2,0,1,0,8,0,0,5,6},
-			{0,0,4,0,7,0,6,9,0},
-			{0,0,0,6,0,4,0,2,3},
-			{0,0,2,3,1,0,8,0,0}  } );
-
+			{0,0,0,4,0,0,0,8,9 },
+			{0,0,0,7,0,0,0,2,3 },
+			{7,8,0,1,0,3,0,5,6 },
+			{0,0,1,6,7,0,0,9,5 },
+			{8,7,0,9,0,2,3,6,4 },
+			{0,0,4,0,0,8,0,1,7 },
+			{0,0,7,0,0,5,0,0,8 },
+			{5,0,2,8,9,0,0,0,1 },//aca poner un 7
+			{0,0,8,0,0,1,5,7,2 } } );
+					
+	
 
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
 			{ 0, 0, 0, 0, 9, 0, 0, 0, 0 }, 
@@ -191,15 +206,15 @@ public class SudokuDemo {
 
 			helpArray = boardToArray(newBoard);
 			
-			GeneticAlgorithm search = new GeneticAlgorithm(newBoard.getBoard().length, 
-										finiteAlphabet , 0.45 ,helpArray);
+			GeneticAlgorithm search = new GeneticAlgorithm(81, 
+										finiteAlphabet , 0.30 ,helpArray, newBoard);
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
 										new SudokuFitnessFunction(), new SudokuGoalTest());
 			
 			//System.out.printf("bestIndividual: %s", bestIndividual);
 			
-			//printBoard(GeneticAlgorithm.stringToBoard(bestIndividual));
+			printBoard(GeneticAlgorithm.stringToBoard(bestIndividual));
 			
 //			System.out.printf("popMax : %d", SudokuBoard.calculatePopulationMax(newBoard.getBoard()));
 			
