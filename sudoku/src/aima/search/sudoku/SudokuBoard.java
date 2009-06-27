@@ -93,12 +93,26 @@ public class SudokuBoard {
 		int cantVacios = 0;
 		int maxPopulation = 0;
 		int contador = 0;
+		
 		cantVacios = obtenerCantVacios(board.getBoard());
 		if(cantVacios <= 5){
 			maxPopulation = calculatePopulationMax(board.getBoard());
 		}else{
-			maxPopulation = 220;
+			maxPopulation = 2500;
 		}
+		
+		/*Y detras del frente tenemos los numeros posibles a colocar*/
+		for(int i = 0; i < board.getBoard().length; i++){
+			for(int j = 0; j < board.getBoard().length; j++){
+				for(int k = 1; k < 10; k++){
+					if(chequearRegion(i, j, k)){
+						posibles[i][j][k] = k;
+					}
+				}
+			}
+		}		
+				
+				
 		
 		do{
 			contador++;
@@ -130,7 +144,7 @@ public class SudokuBoard {
 			if(!string.isEmpty())
 				population.add(string);
 				
-		}while( (population.size() < maxPopulation) && (contador < 200) );
+		}while( (population.size() < maxPopulation) && (contador < 2500) );
 		
 		return population;
 	}
@@ -151,7 +165,7 @@ public class SudokuBoard {
 					}
 				}
 				if(slotsVacios != 0)
-					popMax = Factorial.factorial(slotsVacios);
+					popMax *= Factorial.factorial(slotsVacios);
 				slotsVacios = 0;
 			}
 		}
