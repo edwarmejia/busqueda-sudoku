@@ -17,6 +17,7 @@ import aima.search.sudoku.SudokuBoard;
 import aima.search.sudoku.SudokuFitnessFunction;
 import aima.search.sudoku.SudokuGoalTest;
 import aima.search.sudoku.SudokuSuccessorFunction;
+import aima.search.sudoku.SudokuFileParser;
 import aima.search.uninformed.DepthFirstSearch;
 import aima.search.uninformed.IterativeDeepeningSearch;
 import aima.search.informed.ga.FitnessFunction;
@@ -143,19 +144,16 @@ public class SudokuDemo {
 	}
 
 	private static void newSudokuDemo() {
-		//sudokuWithDepthFirstSearch();
-		//sudokuIDLSDemo(tableroComplejo, true);
-		 //sudokuAStarDemo();
-		// if(tableroComplejo)
-		// printBoard(tableroComplejo);
-		sudokuAG();
+		SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
+		board.printBoard();
+		//sudokuWithDepthFirstSearch(board);
+		//sudokuAG(board);
 
 	}
 
-	private static void sudokuWithDepthFirstSearch() {
+	private static void sudokuWithDepthFirstSearch(SudokuBoard newBoard) {
 		System.out.println("\nSudokuDemo DFS -->");
 		try {
-			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
 
 			Problem problem = new Problem(newBoard,
 					new SudokuSuccessorFunction(), new SudokuGoalTest());
@@ -173,24 +171,8 @@ public class SudokuDemo {
 		}
 	}
 
-	private static void sudokuAStarDemo() {
-		System.out.println("\nSudokuDemo AStar -->");
-		try {
-			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
-			Problem problem = new Problem(newBoard,
-					new SudokuSuccessorFunction(), new SudokuGoalTest(),
-					new EmptyBoxHeuristicFunction());
-
-			Search search = new AStarSearch(new TreeSearch());
-			SearchAgent agent = new SearchAgent(problem, search);
-			// printActions(agent.getActions());
-			// printInstrumentation(agent.getInstrumentation());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	private static void sudokuAG(){
+	private static void sudokuAG(SudokuBoard newBoard){
 		System.out.println("\nSudokuDemo AG -->");
 		try {
 			int helpArray[] = new int [81];
@@ -202,7 +184,7 @@ public class SudokuDemo {
 			finiteAlphabet.add('7'); finiteAlphabet.add('8');
 			finiteAlphabet.add('9');			
 			
-			SudokuBoard newBoard = new SudokuBoard(tableroComplejo.getBoard());
+
 
 			helpArray = boardToArray(newBoard);
 			

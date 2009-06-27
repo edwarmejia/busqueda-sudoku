@@ -7,27 +7,31 @@ import java.util.Scanner;
 
 public class SudokuFileParser {
 
-	private Scanner input;
+	private static Scanner input;
 
-	public int[][] getBoards() {
-
-		return null;
+	private static int [][] board;
+	
+	private static void setBoard() {
+		board = new int [9][9];
 	}
 
-	public static void main(String args[]) {
+	public static int [][] getBoard() {
 
 		Scanner input = new Scanner(System.in);
-		SudokuFileParser application = new SudokuFileParser();
+
+		setBoard();
 		System.out.print("Ingresar el path al archivo de tableros: ");
-		application.analyzePath(input.nextLine());
-		application
-				.openFile("C:\\Users\\jsanta\\Desktop\\puzzles\\puzzles\\puzzlenomas.txt");
-		application.readBoard();
-		application.closeFile();
+		String path = input.nextLine();
+		analyzePath(path);
+		openFile(path);
+		loadBoard();
+		closeFile();
+		
+		return board;
 
 	}
 
-	public void analyzePath(String path) {
+	private static void analyzePath(String path) {
 		// create File object based on user input
 		File name = new File(path);
 
@@ -55,7 +59,7 @@ public class SudokuFileParser {
 	}
 
 	// enable user to open file
-	public void openFile(String path) {
+	private static void openFile(String path) {
 		try {
 			input = new Scanner(new File(path));
 		} // end try
@@ -66,59 +70,33 @@ public class SudokuFileParser {
 	} // end method openFile
 
 	// read record from file
-	public void readBoard() {
+	private static void loadBoard() {
 		// object to be written to screen
 		SudokuBoard tablero = new SudokuBoard();
 
 		try // read records from file using Scanner object
 		{
-			System.out.printf("\n%s\n", input.next());
-			System.out.printf("El nro de puzzle es: %s\n", input.next());
-
+			//System.out.printf("\n%s\n", input.next());
+			//System.out.printf("El nro de puzzle es: %s\n", input.next());
+			int fila = 0;
+			int columna = 0;
 			while (input.hasNext()) {
+				
+				String string = input.next();
+				
 
-				String tableeero = input.next();
-				// input.next()
-				char tab[] = tableeero.toCharArray();
-
-				// System.out.printf("%s\n", tableeero);
-
-				for (int fila = 0; fila < 9; fila++) {
-					for (int columna = 0; columna < 9; columna++) {
-						System.out.printf("%c", tab[(fila * 9 + columna)]);
-
+				for(int j = 0; j < 18; j++){
+					char c = string.charAt(j);
+					if(c != ',' && c != ';'){
+						if(c != '_')
+							board[fila][columna] = c - 48;
+						else
+							board[fila][columna] = 0;
+						columna++;
 					}
 				}
-
-				/*
-				 * if (tableeeero[fila][columna] == '_')
-				 * System.out.printf("%s\n", 0);
-				 */
-
-				// if(input.nextByte() == '')
-				// if (input.nextByte() == '_') {
-				/*
-				 * tablero.setValue(fila, columna, 0); System.out.printf("%d\n",
-				 * 0);
-				 */
-				// } else {
-				/*
-				 * tablero.setValue(fila, columna, input.nextInt()); System.out
-				 * .printf("%d\n", tablero.getBoard()[fila][columna]);
-				 */
-				// }
-				// input.nextByte();
-				// System.out.printf("%s%\n", input.next());
-				/*
-				 * record.setAccount(input.nextInt()); // read account // number
-				 * record.setFirstName(input.next()); // read first name
-				 * record.setLastName(input.next()); // read last name
-				 * record.setBalance(input.nextDouble()); // read balance //
-				 * display record contents
-				 * System.out.printf("%-10d%-12s%-12s%10.2f\n", record
-				 * .getAccount(), record.getFirstName(), record .getLastName(),
-				 * record.getBalance());
-				 */
+				columna = 0;
+				fila++;
 			} // end while
 		} // end try
 		catch (NoSuchElementException elementException) {
@@ -133,7 +111,7 @@ public class SudokuFileParser {
 	} // end method readRecords
 
 	// close file and terminate application
-	public void closeFile() {
+	private static void closeFile() {
 		if (input != null)
 			input.close(); // close file
 	} // end method closeFile
