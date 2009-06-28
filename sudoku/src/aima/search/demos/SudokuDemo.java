@@ -128,15 +128,15 @@ public class SudokuDemo {
 	
 
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
-			{ 0, 0, 0, 0, 9, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 4, 0, 0, 0, 0, 0 },
-			{ 0, 0, 5, 0, 3, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 6 },
-			{ 0, 0, 0, 0, 7, 0, 0, 0, 0 },
-			{ 0, 0, 0, 6, 0, 4, 0, 0, 0 },
-			{ 0, 0, 0, 3, 1, 0, 0, 0, 0 } });
+			{0,0,6,0,9,8,4,0,0},
+			{8,9,0,4,0,1,0,0,0},
+			{0,1,5,0,3,0,9,0,0},
+			{9,5,0,0,2,0,3,0,1},
+			{0,7,0,0,0,0,0,8,0},
+			{2,0,1,0,8,0,0,5,6},
+			{0,0,4,0,7,0,6,9,0},
+			{0,0,0,6,0,4,0,2,3},
+			{0,0,2,3,1,0,8,0,0} });
 
 	public static void main(String[] args) {
 
@@ -144,10 +144,11 @@ public class SudokuDemo {
 	}
 
 	private static void newSudokuDemo() {
-		SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
-		board.printBoard();
+		//SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
+		SudokuBoard board = new SudokuBoard(tableroComplejo.getBoard());
+		//board.printBoard();
 		//sudokuWithDepthFirstSearch(board);
-		//sudokuAG(board);
+		sudokuAG(board);
 
 	}
 
@@ -189,7 +190,7 @@ public class SudokuDemo {
 			helpArray = boardToArray(newBoard);
 			
 			GeneticAlgorithm search = new GeneticAlgorithm(81, 
-										finiteAlphabet , 0.30 ,helpArray, newBoard);
+										finiteAlphabet , 0.50 ,helpArray, newBoard);
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
 										new SudokuFitnessFunction(), new SudokuGoalTest());
