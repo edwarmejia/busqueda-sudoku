@@ -6,8 +6,9 @@ import java.util.Set;
 
 import aima.search.framework.GoalTest;
 import aima.search.framework.Metrics;
-import aima.util.Util;
 import aima.search.sudoku.SudokuBoard;
+import aima.util.Util;
+
 /**
  * Artificial Intelligence A Modern Approach (2nd Edition): Figure 4.17, page 119.
  * 
@@ -54,23 +55,21 @@ public class GeneticAlgorithm {
 	//
 	private final int individualLength;
 	private final Character[] finiteAlphabet;
-	private double mutationProbability;
+	private final double mutationProbability;
 	private final Random random = new Random();
 	//
 	int helpArray[] = new int[81];
      
-	SudokuBoard board;
+	
 	
 	public GeneticAlgorithm(int individualLength,
-			Set<Character> finiteAlphabet, double mutationProbabilityInitial, int[] helpArrayp, SudokuBoard board) {
+			Set<Character> finiteAlphabet, double mutationProbability, int[] helpArrayp) {
 		this.helpArray = helpArrayp;
 		this.individualLength = individualLength;
 		this.finiteAlphabet = finiteAlphabet
 				.toArray(new Character[finiteAlphabet.size()]);
-		this.mutationProbability = mutationProbabilityInitial;
+		this.mutationProbability = mutationProbability;
 		assert (this.mutationProbability >= 0.0 && this.mutationProbability <= 1.0);
-		
-		this.board = board;
 	}
 
 	// function GENETIC-ALGORITHM(population, FITNESS-FN) returns an individual
@@ -79,49 +78,22 @@ public class GeneticAlgorithm {
 	public String geneticAlgorithm(Set<String> population,
 			FitnessFunction fitnessFn, GoalTest goalTest) {
 		String bestIndividual = null;
-		Set<String> newPopulation = new HashSet<String>();
-		
+
 		validatePopulation(population);
 		clearInstrumentation();
 		setPopulationSize(population.size());
-		
+
 		// repeat
 		int cnt = 0;
+		int contador = 0;
 		do {
-			/*Aqui vamos achicando la poblacion de una generacion a otra*/
-			/*if(population.size() > 200){
-				newPopulation.clear();
-				newPopulation.addAll(population);
-				population.clear();
-				population.addAll(selectNbestIndividuals(newPopulation.size()/2, newPopulation, fitnessFn));
-			}/*else{
-				// population <- new_population
-				population.clear();
-				population.addAll(newPopulation);
-			}*/
-
-			/*Vamos achicando la probabilidad de mutacion para ayudar a la convergencia
-			 * del algoritmo*/
-			if(this.mutationProbability > 0.2){
-				this.mutationProbability -= 0.001;
-				System.out.printf("mutProb = %f, ", this.mutationProbability);
-			}
-			System.out.printf("poblacion = %d\n", population.size());
-			//if(population.size() == 1){
-				//return bestIndividual;
-				//population.addAll(board.initPopulation(board));
-			//}
-				//return bestIndividual;
-			//newPopulation.clear();
-			//newPopulation.addAll(population);
+			contador++;
 			bestIndividual = ga(population, fitnessFn);
-			
-			//printBoard(stringToBoard(bestIndividual));
-			//population.clear();
-			//population.addAll(newPopulation);
 			cnt++;
+			//System.out.printf("Poblacion: %d\n", population.size());
+
 			// until some individual is fit enough, or enough time has elapsed
-		} while (!goalTest.isGoalBoard(stringToBoard(bestIndividual)) /*&& cnt < 20*/);
+		} while (!goalTest.isGoalBoard(stringToBoard(bestIndividual)) );
 		setIterations(cnt);
 
 		// return the best individual in population, according to FITNESS-FN
@@ -150,21 +122,6 @@ public class GeneticAlgorithm {
 		return bestIndividual;
 	}
 
-	
-	
-	public static void printBoard(int [][] board) {
-		System.out.println("\n ----------------- ");
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				System.out.print(' ');
-				System.out.print(board[i][j]);
-			}
-			System.out.print('\n');
-		}
-
-	}
-	
-	
 	
 	//convierte el string al tablero de sudoku
 	public static int [][] stringToBoard(String individual){
@@ -234,123 +191,76 @@ public class GeneticAlgorithm {
 	}
 
 	private String ga(Set<String> population, FitnessFunction fitnessFn) {
-        // new_population <- empty set
-        Set<String> newPopulation = new HashSet<String>();
+		// new_population <- empty set
+		Set<String> newPopulation = new HashSet<String>();
 
-        // loop for i from 1 to SIZE(population) do
-        for (int i = 0; i < population.size(); i++) {
-                // x <- RANDOM-SELECTION(population, FITNESS-FN)
-                String x = randomSelection(population, fitnessFn);
-                // y <- RANDOM-SELECTION(population, FITNESS-FN)
-                String y = randomSelection(population, fitnessFn);
-                // child <- REPRODUCE(x, y)
-                String child = reproduce(x, y);
-                // if (small random probability) then child <- MUTATE(child)
-                if (random.nextDouble() <= this.mutationProbability) {
-                        child = mutate(child);
-                }
-                // add child to new_population
-                newPopulation.add(child);
-        }
-        // population <- new_population
-        population.clear();
-        population.addAll(newPopulation);
+		// loop for i from 1 to SIZE(population) do
+		for (int i = 0; i < population.size(); i++) {
+			// x <- RANDOM-SELECTION(population, FITNESS-FN)
+			String x = randomSelection(population, fitnessFn);
+			// y <- RANDOM-SELECTION(population, FITNESS-FN)
+			String y = randomSelection(population, fitnessFn);
+			// child <- REPRODUCE(x, y)
+			String child = reproduce(x, y);
+			// if (small random probability) then child <- MUTATE(child)
+			
+			/*
+			while (newPopulation.contains(child)){
+					if (random.nextDouble() <= this.mutationProbability) {
+					child = mutate(child);
+				}
+			}	
+			
+			*/
+			if (random.nextDouble() <= this.mutationProbability) {
+				child = mutate(child);
+			}
+			
+			// add child to new_population
+			newPopulation.add(child);
+		}
+		// population <- new_population
+		population.clear();
+		population.addAll(newPopulation);
+		System.out.println(population.size());
 
-
-        return retrieveBestIndividual(population, fitnessFn);
-
+		return retrieveBestIndividual(population, fitnessFn);
 	}
 
-	private Set<String> selectNbestIndividuals(int N, Set<String> population,
-			FitnessFunction fitnessFn){
+	private String randomSelection(Set<String> population,
+			FitnessFunction fitnessFn) {
+		String selected = null;
 
-		Set<String> newPopulation = new HashSet<String>();
-		
 		// Determine all of the fitness values
 		double[] fValues = new double[population.size()];
 		String[] popArray = population.toArray(new String[population.size()]);
 		for (int i = 0; i < popArray.length; i++) {
 			fValues[i] = fitnessFn.getValue(popArray[i]);
 		}
-		
+
 		// Normalize the fitness values
 		fValues = Util.normalize(fValues);
-		
-		for(int i = 0; i < N; i++){
-				double mayor = 0.0;
-				int k = 0;
-				int kMayor = 0;
-				
-				for(; k < fValues.length; k++){
-					if(fValues[k] > mayor){
-						mayor = fValues[k];
-						kMayor = k;
-					}
-				}
-				fValues[kMayor] = 0;
-				newPopulation.add(popArray[kMayor]);
+		double prob = random.nextDouble();
+		double totalSoFar = 0.0;
+		for (int i = 0; i < fValues.length; i++) {
+			// Are at last element so assign by default
+			// in case there are rounding issues with the normalized values
+			totalSoFar += fValues[i];
+			if (prob <= totalSoFar) {
+				selected = popArray[i];
+				break;
+			}
 		}
-		
-		for(int i = 0; i < N/2; i++){
-			newPopulation.add(popArray[i]);
+
+		// selected may not have been assigned
+		// if there was a rounding error in the
+		// addition of the normalized values (i.e. did not total to 1.0)
+		if (null == selected) {
+			// Assign the last value
+			selected = popArray[popArray.length - 1];
 		}
-		
-		
-		
-		return newPopulation;
-		
-	}
-	private String randomSelection(Set<String> population,
-			FitnessFunction fitnessFn) {
-		 String selected = null;
 
-         // Determine all of the fitness values
-         double[] fValues = new double[population.size()];
-         String[] popArray = population.toArray(new String[population.size()]);
-         for (int i = 0; i < popArray.length; i++) {
-                 fValues[i] = fitnessFn.getValue(popArray[i]);
-         }
-
-         double mayor = fValues[0];
-         double menor = fValues[0];
-         int indiceMayor = 0;
-         int indiceMenor = 0;
-         for(int i = 0; i < popArray.length; i++){
-        	 if(fValues[i] > mayor){
-        		 mayor = fValues[i];
-        		 indiceMayor = i;
-        	 }
-        	 if(fValues[i] < menor){
-        		 menor = fValues[i];
-        		 indiceMenor = i;
-        	 }
-         }
-         
-         
-         // Normalize the fitness values
-         fValues = Util.normalize(fValues);
-         double prob = random.nextDouble();
-         double totalSoFar = 0.0;
-         for (int i = 0; i < fValues.length; i++) {
-                 // Are at last element so assign by default
-                 // in case there are rounding issues with the normalized values
-                 totalSoFar += fValues[i];
-                 if (prob <= totalSoFar) {
-                         selected = popArray[i];
-                         break;
-                 }
-         }
-
-         // selected may not have been assigned
-         // if there was a rounding error in the
-         // addition of the normalized values (i.e. did not total to 1.0)
-         if (null == selected) {
-                 // Assign the last value
-                 selected = popArray[popArray.length - 1];
-         }
-
-         return selected;
-
+		return selected;
 	}
 
 	// function REPRODUCE(x, y) returns an individual
@@ -374,49 +284,21 @@ public class GeneticAlgorithm {
         // solo pueden ser en los puntos de corte validos
         
         int c = randomCruce(individualLength);
-<<<<<<< .mine
-        int d = randomCruce(individualLength);
-        while(d == c){
-        d = randomCruce(individualLength);
-        }
-
-=======
         int d = randomCruce(individualLength);
         while(d == c){
         	d = randomCruce(individualLength);
         }
         
->>>>>>> .r25
         //System.out.printf("punto de cruce %d\n", c);
-
-        // realizar el cruce en el punto de cruce
-<<<<<<< .mine
-
-        if (d > c){
-        	for (int i = 0 ; i < 81 ; i++){
-        			if (i <= c )
-        				arrayResultante[i] = xArray[i];
-        			else {
-        				if(i <= d)
-        					arrayResultante[i] = yArray[i];
-        				else
-        					arrayResultante[i] = xArray[i];
-        			}
-        	}
-        }else{
-        	for (int i = 0 ; i < 81 ; i++){
-        		if (i <= d )
-        			arrayResultante[i] = xArray[i];
-        		else {
-        			if(i <= c)
-        				arrayResultante[i] = yArray[i];
-        			else
-        				arrayResultante[i] = xArray[i];
-        		}
-        	}
-        }        
-=======
         
+        // realizar el cruce en el punto de cruce
+        for (int i = 0 ; i < 81 ; i++){
+            if (i <= c )
+                    arrayResultante[i] = xArray[i];
+            else 
+            	arrayResultante[i] = yArray[i];
+        }
+            /*
         if (d > c){
 	        for (int i = 0 ; i < 81 ; i++){
 	                if (i <= c )
@@ -440,15 +322,9 @@ public class GeneticAlgorithm {
                 		arrayResultante[i] = xArray[i];
                 }		
 	        }
-        }
->>>>>>> .r25
+        }*/
         
-<<<<<<< .mine
-        //System.out.printf("punto de cruce %d\n", c);
-        
-=======
         //df
->>>>>>> .r25
         //System.out.println(arrayResultante);
         //convierte a String lo que se obtuvo en el cruce
         stringResultante = String.copyValueOf(arrayResultante);
@@ -460,6 +336,7 @@ public class GeneticAlgorithm {
 
 	}
 
+	
     private int randomCruce(int length) {
         int randomN;
         randomN = 7;
@@ -471,195 +348,212 @@ public class GeneticAlgorithm {
     }
 
 
+	
+	
+	
+	private String mutate(String individual) {
+	     int randomRegion;
 
-    
-    
-    private String mutate(String individual) {
-        int randomRegion;
+         int casilla_1 = 0;
+         int casilla_2 = 0;
+         char individualArray[] = new char[81];
+         char aux;
+         int region_valida; // 0-8;
+         String string_mutado = new String();
+         int cont_vacios = 0;
+         int valido = 0;
+         int encontro_region=0;
 
-	    int casilla_1 = 0;
-	    int casilla_2 = 0;
-	    char individualArray[] = new char[81];
-	    char aux;
-	    int region_valida; // 0-8;
-	    String string_mutado = new String();
-	    int cont_vacios = 0;
-	    int valido = 0;
-	    int encontro_region=0;
+  /*       
+         //verifciar que exista al menos una region para mutar
+         for (int i = 0 ; i < 81 ; i++){
+                 cont_vacios=0;
+                 for(int j = i ; j < i+9 ; j++){
+                         if (helpArray[j] == 0)cont_vacios++;
+                 }
+                 if(cont_vacios >= 2){
+                         valido = 1;
+                         break;
+                 }
+                 if (valido == 1)break;
+         }
 
+         
+         individualArray = individual.toCharArray();
+         
+         if (valido == 1){
 
-    //verifciar que exista al menos una region para mutar
-            for (int i = 0 ; i < 81 ; i++){
-                    cont_vacios=0;
-                    for(int j = i ; j < i+9 ; j++){
-                            if (helpArray[j] == 0)cont_vacios++;
-                    }
-                    if(cont_vacios >= 2){
-                            valido = 1;
-                            break;
-                    }
-                    if (valido == 1)break;
-            }
+        	 cont_vacios = 0;
+                         for(int i = 0 ; i < 9 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
 
-	    if (valido == 1){
-	
-	            //detectar region a mutar, buscar region valida
-	            while(encontro_region == 0){
-	
-	                    cont_vacios = 0;
-	
-	                    //generar numero aleatoria de region y verificar que sea valida
-	                    //para la mutacion
-	                    randomRegion = random.nextInt(9);
-	
-	                    if (randomRegion==0){
-	
-	                            for(int i = 0 ; i < 9 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==1){
-	
-	                            for(int i = 9 ; i < 18 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==2){
-	
-	                            for(int i = 18 ; i < 27 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==3){
-	
-	                            for(int i = 27 ; i < 36 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==4){
-	
-	
-	                            for(int i = 36 ; i < 45 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==5){
-	
-	                            for(int i = 45 ; i < 54 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==6){
-	
-	                            for(int i = 54 ; i < 63 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==7){
-	
-	                            for(int i = 63 ; i < 72 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
-	                            }
-	                    }
-	                    if (randomRegion==8){
-	
-	                            for(int i = 72 ; i < 81 ; i++)
-	                                    if (helpArray[i] == 0)cont_vacios++;
-	
-	                            if (cont_vacios >= 2){
-	                                    encontro_region = 1;
-	                                    while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
-	                                    while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
-	                            }
-	
-	                    }
-	
-	
-	            }
-	
-	
-	            individualArray = individual.toCharArray();
-	
-	            //se realiza la mutacion
-	            aux = individualArray[casilla_1];
-	            individualArray[casilla_1] = individualArray[casilla_2];
-	            individualArray[casilla_2] = aux;
-	
-	
-	            string_mutado = String.copyValueOf(individualArray);
-	
-	            return string_mutado;
-	    }
-	
-	
-	    return individual;
-	    /*
-	    StringBuffer mutInd = new StringBuffer(individual);
-	
-	    int posOffset = randomOffset(individualLength);
-	    int charOffset = randomOffset(finiteAlphabet.length);
-	
-	    mutInd.setCharAt(posOffset, finiteAlphabet[charOffset]);
-	
-	    return mutInd.toString();*/            
-	
-	   }
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	
-	
+                 
+
+                         cont_vacios = 0;
+                         for(int i = 9 ; i < 18 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+                         
+
+                         cont_vacios = 0;
+                         for(int i = 18 ; i < 27 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+                         
+           
+                         cont_vacios=0;
+                         for(int i = 27 ; i < 36 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+
+                         
+                         cont_vacios=0;
+                         for(int i = 36 ; i < 45 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
 
 
-<<<<<<< .mine
-=======
+                         cont_vacios = 0;
+                         for(int i = 45 ; i < 54 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+
+
+                         cont_vacios = 0;
+                         for(int i = 54 ; i < 63 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+
+                         
+                         cont_vacios = 0;
+                         for(int i = 63 ; i < 72 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+
+                         
+                         
+
+                         cont_vacios = 0;
+                         for(int i = 72 ; i < 81 ; i++)
+                                 if (helpArray[i] == 0)cont_vacios++;
+
+                         if (cont_vacios >= 2){
+                                 encontro_region = 1;
+                                 while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
+                                 while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
+                         }
+                         //realizar mutacion
+                         aux = individualArray[casilla_1];
+                         individualArray[casilla_1] = individualArray[casilla_2];
+                         individualArray[casilla_2] = aux;
+
+
+
+         string_mutado = String.copyValueOf(individualArray);
+
+         return string_mutado;
+ 	}
+ 	else
+ 	      return individual;*/
+ 
+
+         //verifciar que exista al menos una region para mutar
+                 for (int i = 0 ; i < 81 ; i++){
+                         cont_vacios=0;
+                         for(int j = i ; j < i+9 ; j++){
+                                 if (helpArray[j] == 0)cont_vacios++;
+                         }
+                         if(cont_vacios >= 2){
+                                 valido = 1;
+                                 break;
+                         }
+                         if (valido == 1)break;
+                 }
+
+         if (valido == 1){
+
+                 //detectar region a mutar, buscar region valida
+                 while(encontro_region == 0){
+
+                         cont_vacios = 0;
+
+                         //generar numero aleatoria de region y verificar que sea valida
+                         //para la mutacion
+                         randomRegion = random.nextInt(9);
+
                          if (randomRegion==0){
 
                                  for(int i = 0 ; i < 9 ; i++)
@@ -777,9 +671,10 @@ public class GeneticAlgorithm {
 
                  return string_mutado;
          }
-
-
          return individual;
+
+
+   
          /*
          StringBuffer mutInd = new StringBuffer(individual);
 
@@ -789,10 +684,9 @@ public class GeneticAlgorithm {
          mutInd.setCharAt(posOffset, finiteAlphabet[charOffset]);
 
          return mutInd.toString();*/		 
+         
+}
 
-	}
-
->>>>>>> .r25
 	private String retrieveBestIndividual(Set<String> population,
 			FitnessFunction fitnessFn) {
 		String bestIndividual = null;
