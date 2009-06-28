@@ -11,30 +11,15 @@ public class SudokuFitnessFunction implements FitnessFunction{
 
 
        public double getValue(String individual){
-
                double fitness;
  
-               stringToBoard(individual);// se convierte el string a board
-               
-               //valor_faltantes = numerosFaltantes();
-/*             fitness_int = 20000000 -(valor_filas_columnas2 + valor_faltantes +
-				valor_filas_y_columnas)*(+1);*/
-               
+               stringToBoard(individual);/*se convierte el string a board*/
+
+               /*Calculamos el valor de la funcion fitnes*/
                fitness = 20000000 - 10*(sumFilasColumnas() + multFilasColumnas() +
             		   			50*numerosFaltantes());
 
-               //fitness  = (double)fitness_int;
-
-               //if (fitness_int < 0)
-                       //System.out.println("ooooooooooooooooooooooooooooooooop");
-               //System.out.println(fitness_int);
-               //System.out.printf("valor : %d",valor_faltantes);
-               //System.out.printf("valor : %f",fitness);
-
-
                return fitness;
-
-
        }
 
 
@@ -93,7 +78,6 @@ public class SudokuFitnessFunction implements FitnessFunction{
        }
 
        private static int numerosFaltantes(){
-
                int conjuntoValores[] = {1,2,3,4,5,6,7,8,9};
                int faltantes = 0;
 
@@ -124,7 +108,6 @@ public class SudokuFitnessFunction implements FitnessFunction{
                     	   conjuntoValores[k] = k + 1;
 
                }
-
 
                return faltantes;
        }
