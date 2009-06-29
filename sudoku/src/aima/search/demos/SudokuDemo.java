@@ -115,15 +115,17 @@ new int [][]{
 public class SudokuDemo {
 
 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
-			{0,0,0,4,0,0,0,8,9 },
-			{0,0,0,7,0,0,0,2,3 },
-			{7,8,0,1,0,3,0,5,6 },
-			{0,0,1,6,7,0,0,9,5 },
-			{8,7,0,9,0,2,3,6,4 },
-			{0,0,4,0,0,8,0,1,7 },
-			{0,0,7,0,0,5,0,0,8 },
-			{5,0,2,8,9,0,0,0,1 },//aca poner un 7
-			{0,0,8,0,0,1,5,7,2 } } );
+			{0,0,0,0,0,6,7,8,0 },
+			{0,0,6,0,0,0,1,2,0 },
+			{0,0,9,0,2,3,0,5,0 },
+			{0,0,4,0,6,0,8,9,0 },
+			{0,6,5,8,9,0,2,1,0 },
+			{8,0,0,2,1,4,3,6,0 },
+			{0,0,0,0,4,2,9,7,0 },
+			{0,0,0,0,7,8,5,3,0 },//aca poner un 7
+			{0,0,0,0,0,1,0,0,0 } } );
+			
+					
 					
 	
 
@@ -144,11 +146,11 @@ public class SudokuDemo {
 	}
 
 	private static void newSudokuDemo() {
-		//SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
-		SudokuBoard board = new SudokuBoard(tableroComplejo.getBoard());
+		SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
+		//SudokuBoard board = new SudokuBoard(tableroComplejo.getBoard());
 		//board.printBoard();
-		//sudokuWithDepthFirstSearch(board);
-		sudokuAG(board);
+		sudokuWithDepthFirstSearch(board);
+		//sudokuAG(board);
 
 	}
 

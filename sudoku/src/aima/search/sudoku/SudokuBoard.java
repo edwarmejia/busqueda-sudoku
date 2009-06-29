@@ -98,7 +98,7 @@ public class SudokuBoard {
 		if(cantVacios <= 5){
 			maxPopulation = calculatePopulationMax(board.getBoard());
 		}else{
-			maxPopulation = 500;
+			maxPopulation = 1200;
 		}
 		
 		/*Y detras del frente tenemos los numeros posibles a colocar*/
@@ -144,7 +144,7 @@ public class SudokuBoard {
 			if(!string.isEmpty())
 				population.add(string);
 				
-		}while( (population.size() < maxPopulation) && (contador < 500) );
+		}while( (population.size() < maxPopulation) && (contador < 800) );
 		
 		return population;
 	}
