@@ -17,7 +17,7 @@ public class SudokuFitnessFunction implements FitnessFunction{
 
                /*Calculamos el valor de la funcion fitnes*/
                fitness = 20000000 - 10*(sumFilasColumnas() + multFilasColumnas() +
-            		   			50*numerosFaltantes());
+            		   			500*numerosFaltantes());
 
                return fitness;
        }

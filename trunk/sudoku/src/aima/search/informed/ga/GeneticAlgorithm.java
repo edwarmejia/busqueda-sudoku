@@ -7,6 +7,7 @@ import java.util.Set;
 import aima.search.framework.GoalTest;
 import aima.search.framework.Metrics;
 import aima.search.sudoku.SudokuBoard;
+import aima.search.sudoku.SudokuFitnessFunction;
 import aima.util.Util;
 
 /**
@@ -89,18 +90,21 @@ public class GeneticAlgorithm {
 		// repeat
 		int cnt = 0;
 		int contador = 0;
+		SudokuFitnessFunction fitnessValue = new SudokuFitnessFunction();
+		
 		do {
 			contador++;
 			bestIndividual = ga(population, fitnessFn);
 			cnt++;
 			//System.out.printf("Poblacion: %d\n", population.size());
 			if(this.mutationProbability > 0.2){
-                this.mutationProbability -= 0.001;
-                System.out.printf("mutProb = %f, ", this.mutationProbability);
+                this.mutationProbability -= 0.005;
+                //System.out.printf("mutProb = %f, ", this.mutationProbability);
 			}
 			
 			//if(population.size() == 1)
 				//return bestIndividual;
+			System.out.printf("fValue %f\n", fitnessValue.getValue(bestIndividual));
 			
 			// until some individual is fit enough, or enough time has elapsed
 		} while (!goalTest.isGoalBoard(stringToBoard(bestIndividual)) );
@@ -306,7 +310,7 @@ public class GeneticAlgorithm {
             if (i <= c )
                     arrayResultante[i] = xArray[i];
             else 
-            	arrayResultante[i] = yArray[i];
+            		arrayResultante[i] = yArray[i];
         }
             /*
         if (d > c){
