@@ -9,15 +9,16 @@ public class SudokuFitnessFunction implements FitnessFunction{
 
        public static SudokuBoard board = new SudokuBoard();
 
-
+       public static int cantEvaluaciones = 0;
        public double getValue(String individual){
                double fitness;
  
+               cantEvaluaciones++;
                stringToBoard(individual);/*se convierte el string a board*/
 
                /*Calculamos el valor de la funcion fitnes*/
                fitness = 20000000 - 10*(sumFilasColumnas() + multFilasColumnas() +
-            		   			500*numerosFaltantes());
+            		   			50*numerosFaltantes());
 
                return fitness;
        }

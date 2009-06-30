@@ -3,6 +3,7 @@ package aima.search.demos;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 import aima.search.framework.GraphSearch;
@@ -148,9 +149,25 @@ public class SudokuDemo {
 	private static void newSudokuDemo() {
 		SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
 		//SudokuBoard board = new SudokuBoard(tableroComplejo.getBoard());
-		//board.printBoard();
-		sudokuWithDepthFirstSearch(board);
-		//sudokuAG(board);
+
+		Scanner input = new Scanner(System.in);
+		System.out.print("Ingrese \n1:Algoritmo Genetico\n2:Algoritmo DFS: ");
+		int opcion = input.nextInt();
+		
+		if(opcion == 1){
+			System.out.print("Ingrese la cantidad maxima de poblacion inicial\n");
+			int cantMaxPopulation = input.nextInt();		
+			System.out.print("Ingrese la probabilidad de mutacion inicial(entre 0,0 - 1,0)\n");
+			double probMutacion = input.nextDouble();	
+			
+			sudokuAG(board, cantMaxPopulation, probMutacion);			
+		}else if(opcion == 2){
+			sudokuWithDepthFirstSearch(board);
+		}else{
+			System.out.print("Opcion invalida\n");
+		}
+
+
 
 	}
 
@@ -175,7 +192,7 @@ public class SudokuDemo {
 	}
 
 	
-	private static void sudokuAG(SudokuBoard newBoard){
+	private static void sudokuAG(SudokuBoard newBoard, int cantMaxPopulation, double probMutacion){
 		System.out.println("\nSudokuDemo AG -->");
 		try {
 			int helpArray[] = new int [81];
@@ -187,12 +204,12 @@ public class SudokuDemo {
 			finiteAlphabet.add('7'); finiteAlphabet.add('8');
 			finiteAlphabet.add('9');			
 			
-
-
 			helpArray = boardToArray(newBoard);
+
+			newBoard.setCantMaxPopulation(cantMaxPopulation);
 			
 			GeneticAlgorithm search = new GeneticAlgorithm(81, 
-										finiteAlphabet , 0.50 ,helpArray, newBoard);
+										finiteAlphabet , probMutacion ,helpArray, newBoard);
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
 										new SudokuFitnessFunction(), new SudokuGoalTest());
@@ -202,6 +219,9 @@ public class SudokuDemo {
 			printBoard(GeneticAlgorithm.stringToBoard(bestIndividual));
 			
 //			System.out.printf("popMax : %d", SudokuBoard.calculatePopulationMax(newBoard.getBoard()));
+			System.out.printf("\nLa O(n) temporal es: %d", 
+					SudokuFitnessFunction.cantEvaluaciones);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

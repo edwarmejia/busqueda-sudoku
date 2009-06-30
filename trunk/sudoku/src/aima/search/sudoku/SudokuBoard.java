@@ -19,11 +19,21 @@ public class SudokuBoard {
 	 * 
 	 * public static String DOWN = "Down";
 	 */
-
+	private static int cantMaxPopulation = 0;
+	
 	public int[][] getBoard() {
 		return board;
 	}
-
+	
+	public int getCantMaxPopulation(){
+		return cantMaxPopulation;
+	}	
+	
+	public void setCantMaxPopulation(int cantMaxPop){
+		cantMaxPopulation = cantMaxPop;
+		
+	}
+	
 	public int[][] board;
 	
 	static int[][][] posibles;
@@ -98,8 +108,10 @@ public class SudokuBoard {
 		if(cantVacios <= 5){
 			maxPopulation = calculatePopulationMax(board.getBoard());
 		}else{
-			maxPopulation = 1200;
+			maxPopulation = 10000;
 		}
+		
+		maxPopulation = getCantMaxPopulation();
 		
 		/*Y detras del frente tenemos los numeros posibles a colocar*/
 		for(int i = 0; i < board.getBoard().length; i++){
@@ -144,7 +156,7 @@ public class SudokuBoard {
 			if(!string.isEmpty())
 				population.add(string);
 				
-		}while( (population.size() < maxPopulation) && (contador < 800) );
+		}while( (population.size() < maxPopulation) && (contador < (maxPopulation + 50) ) );
 		
 		return population;
 	}
