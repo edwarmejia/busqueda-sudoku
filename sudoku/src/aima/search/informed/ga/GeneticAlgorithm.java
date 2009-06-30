@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import aima.search.framework.BestFirstSearch;
 import aima.search.framework.GoalTest;
 import aima.search.framework.Metrics;
 import aima.search.sudoku.SudokuBoard;
@@ -97,10 +98,10 @@ public class GeneticAlgorithm {
 			bestIndividual = ga(population, fitnessFn);
 			cnt++;
 			//System.out.printf("Poblacion: %d\n", population.size());
-			if(this.mutationProbability > 0.2){
-                this.mutationProbability -= 0.005;
+			//if(this.mutationProbability > 0.2){
+            //    this.mutationProbability -= 0.005;
                 //System.out.printf("mutProb = %f, ", this.mutationProbability);
-			}
+			//}
 			
 			//if(population.size() == 1)
 				//return bestIndividual;
@@ -212,6 +213,7 @@ public class GeneticAlgorithm {
 		for (int i = 0; i < population.size(); i++) {
 			// x <- RANDOM-SELECTION(population, FITNESS-FN)
 			String x = randomSelection(population, fitnessFn);
+			//String x = retrieveBestIndividual(population, fitnessFn);
 			// y <- RANDOM-SELECTION(population, FITNESS-FN)
 			String y = randomSelection(population, fitnessFn);
 			// child <- REPRODUCE(x, y)
@@ -291,27 +293,50 @@ public class GeneticAlgorithm {
         xArray = x.toCharArray();
         yArray = y.toCharArray();
         
+        SudokuFitnessFunction fitness = new SudokuFitnessFunction();
+        
+        double fitnessValueX = fitness.getValue(x);
+        double fitnessValueY = fitness.getValue(y);
+        
+        double fitnessMayor = fitnessValueX;
+        boolean mayorY = false;
+        if(fitnessValueY > fitnessMayor){
+        	fitnessMayor = fitnessValueY;
+        	mayorY = true;
+        }
         //System.out.println(xArray);
         //System.out.println(xArray);
         
         //generar un numero aleatorio para el punto de cruce
         // solo pueden ser en los puntos de corte validos
         
-        int c = randomCruce(individualLength);
-        int d = randomCruce(individualLength);
-        while(d == c){
-        	d = randomCruce(individualLength);
-        }
+        //do{
+	        int c = randomCruce(individualLength);
+	      //  int d = randomCruce(individualLength);
+	       // while(d == c){
+	       // 	d = randomCruce(individualLength);
+	      //  }
+	        
+	        //System.out.printf("punto de cruce %d\n", c);
+	        
+	        // realizar el cruce en el punto de cruce
+	        for (int i = 0 ; i < 81 ; i++){
+	            if (i <= c )
+	                    arrayResultante[i] = xArray[i];
+	            else 
+	            		arrayResultante[i] = yArray[i];
+	        }
+	        
+	        stringResultante = String.copyValueOf(arrayResultante);
+        //}while(fitness.getValue(stringResultante) < fitnessMayor);
+	        if(fitness.getValue(stringResultante) > fitnessMayor)
+	        	return stringResultante;
+	        	//System.out.println(stringResultante);
+        if(mayorY)
+        	return y;
         
-        //System.out.printf("punto de cruce %d\n", c);
+        return x;
         
-        // realizar el cruce en el punto de cruce
-        for (int i = 0 ; i < 81 ; i++){
-            if (i <= c )
-                    arrayResultante[i] = xArray[i];
-            else 
-            		arrayResultante[i] = yArray[i];
-        }
             /*
         if (d > c){
 	        for (int i = 0 ; i < 81 ; i++){
@@ -341,11 +366,7 @@ public class GeneticAlgorithm {
         //df
         //System.out.println(arrayResultante);
         //convierte a String lo que se obtuvo en el cruce
-        stringResultante = String.copyValueOf(arrayResultante);
-        
-        //System.out.println(stringResultante);
-        
-        return stringResultante;
+
 
 
 	}
@@ -394,251 +415,268 @@ public class GeneticAlgorithm {
          
          individualArray = individual.toCharArray();
 
-         if (valido == 1){
-
-        	 	 //randomRegion = random.nextInt(11);
-                 //detectar region a mutar, buscar region valida
-                 //while(encontro_region == 0){
-
-                         cont_vacios = 0;
-
-                         //generar numero aleatoria de region y verificar que sea valida
-                         //para la mutacion
-                         probMutar = random.nextInt(100);
-                         /*Region 1*/
-                         if ( random.nextInt(100) <= probMutar){
-
-                                 for(int i = 0 ; i < 9 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+         SudokuFitnessFunction fitness = new SudokuFitnessFunction();
+         
+         double fitnessValueIndividual = fitness.getValue(individual);
+         
+         do{
+	         if (valido == 1){
+	
+	        	 	 //randomRegion = random.nextInt(11);
+	                 //detectar region a mutar, buscar region valida
+	                 //while(encontro_region == 0){
+	
+	                         cont_vacios = 0;
+	
+	                         //generar numero aleatoria de region y verificar que sea valida
+	                         //para la mutacion
+	                         probMutar = random.nextInt(100);
+	                         /*Region 1*/
+	                         if ( random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 0 ; i < 9 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
 	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                     
-                                 }
-                         }
-                         cont_vacios = 0;
-                         /*Region 2*/
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 9 ; i < 18 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                 
-                             }
-                         }
-                         cont_vacios = 0;
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 18 ; i < 27 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                 
-                                 }
-                         }
-                         cont_vacios = 0;
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 27 ; i < 36 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                 
-                                 }
-                         }
-                         cont_vacios = 0;
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 36 ; i < 45 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                 
-                                 }
-                         }
-                         cont_vacios = 0;
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 45 ; i < 54 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
+	                                 }
+	                         }
+	                         cont_vacios = 0;
+	                         /*Region 2*/
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 9 ; i < 18 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+		                                     casilla_1 = casilla_2 = casilla_3 = 0;
+	                                	     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
 	                                 
-                                 }
-                         }
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 54 ; i < 63 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                 
-                                 }
-                         }
-                         cont_vacios = 0;
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 63 ; i < 72 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
-                                 
-                                 }
-                         }
-                         cont_vacios = 0;
-                         if (random.nextInt(100) <= probMutar){
-
-                                 for(int i = 72 ; i < 81 ; i++)
-                                         if (helpArray[i] == 0)cont_vacios++;
-
-                                 if (cont_vacios == 2){
-                                         //encontro_region = 1;
-                                         while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
-                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
-                                         //se realiza la mutacion
-                                         aux = individualArray[casilla_1];
-                                         individualArray[casilla_1] = individualArray[casilla_2];
-                                         individualArray[casilla_2] = aux;
-                                 }else if (cont_vacios >= 2){
-	                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-	                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-	                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
-	                                     
-	                                     aux = individualArray[casilla_1];
-	                                     individualArray[casilla_1] = individualArray[casilla_2];
-	                                     individualArray[casilla_2] = individualArray[casilla_3];
-	                                     individualArray[casilla_3] = aux;
+	                             }
+	                         }
+	                         cont_vacios = 0;
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 18 ; i < 27 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
 	                                 
-                                 }
-
-                         }
-
-
-                 //}
-                 string_mutado = String.copyValueOf(individualArray);
-                 return string_mutado;
-         }
-         return individual;
+	                                 }
+	                         }
+	                         cont_vacios = 0;
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 27 ; i < 36 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
+	                                 
+	                                 }
+	                         }
+	                         cont_vacios = 0;
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 36 ; i < 45 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
+	                                 
+	                                 }
+	                         }
+	                         cont_vacios = 0;
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 45 ; i < 54 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
+		                                 
+	                                 }
+	                         }
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 54 ; i < 63 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
+	                                 
+	                                 }
+	                         }
+	                         cont_vacios = 0;
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 63 ; i < 72 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
+	                                 
+	                                 }
+	                         }
+	                         cont_vacios = 0;
+	                         if (random.nextInt(100) <= probMutar){
+	
+	                                 for(int i = 72 ; i < 81 ; i++)
+	                                         if (helpArray[i] == 0)cont_vacios++;
+	
+	                                 if (cont_vacios == 2){
+	                                         //encontro_region = 1;
+	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
+	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
+	                                         //se realiza la mutacion
+	                                         aux = individualArray[casilla_1];
+	                                         individualArray[casilla_1] = individualArray[casilla_2];
+	                                         individualArray[casilla_2] = aux;
+	                                 }else if (cont_vacios > 2){
+	                                	     casilla_1 = casilla_2 = casilla_3 = 0;
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1));
+		                                     
+		                                     aux = individualArray[casilla_1];
+		                                     individualArray[casilla_1] = individualArray[casilla_2];
+		                                     individualArray[casilla_2] = individualArray[casilla_3];
+		                                     individualArray[casilla_3] = aux;
+		                                 
+	                                 }
+	
+	                         }
+	
+	
+	                 //}
+	                 string_mutado = String.copyValueOf(individualArray);
+//	                 return string_mutado;
+	         }
+         }while((fitness.getValue(string_mutado) < fitnessValueIndividual));
+       
+         return string_mutado;
+         
+        //	 return individual;
 
          
 }
