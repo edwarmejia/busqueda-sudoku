@@ -55,6 +55,8 @@ public class GeneticAlgorithm {
 	protected static final String ITERATIONS = "iterations";
 
 	//
+	private final int populationLenght;
+	
 	private final int individualLength;
 	private final Character[] finiteAlphabet;
 	private double mutationProbability;
@@ -65,7 +67,7 @@ public class GeneticAlgorithm {
     SudokuBoard board;
     
     public GeneticAlgorithm(int individualLength,
-                    Set<Character> finiteAlphabet, double mutationProbabilityInitial, int[] helpArrayp, SudokuBoard board) {
+                    Set<Character> finiteAlphabet, double mutationProbabilityInitial, int[] helpArrayp, SudokuBoard board, int populationLength) {
             this.helpArray = helpArrayp;
             this.individualLength = individualLength;
             this.finiteAlphabet = finiteAlphabet
@@ -74,6 +76,7 @@ public class GeneticAlgorithm {
             assert (this.mutationProbability >= 0.0 && this.mutationProbability <= 1.0);
             
             this.board = board;
+            this.populationLenght = populationLength;
     }
 
 
@@ -144,8 +147,6 @@ public class GeneticAlgorithm {
 	
 	//convierte el string al tablero de sudoku
 	public static int [][] stringToBoard(String individual){
-		
-
 		int contador_cadena = 0; 
 		int columna, fila;
 		char vector_char[] = new char [81];
@@ -165,9 +166,6 @@ public class GeneticAlgorithm {
 		return board;
 		
 	}
-	
-	
-	
 	
 	
 	public void clearInstrumentation() {
@@ -251,8 +249,9 @@ public class GeneticAlgorithm {
 		
 		String[] popArray = population.toArray(new String[population.size()]);
 		
-		for (int i = 0; i < eliteNindividuos; i++) {
+		for (int i = 0; population.size() > (this.populationLenght - eliteNindividuos); i++) {
 			population.remove(popArray[random.nextInt(popArray.length)]);
+				//i--;
 		}
 		
 		return population;

@@ -212,7 +212,7 @@ public class SudokuDemo {
 			newBoard.setCantMaxPopulation(cantMaxPopulation);
 			
 			GeneticAlgorithm search = new GeneticAlgorithm(81, 
-										finiteAlphabet , probMutacion ,helpArray, newBoard);
+										finiteAlphabet , probMutacion ,helpArray, newBoard, cantMaxPopulation);
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
 										new SudokuFitnessFunction(), new SudokuGoalTest(), eliteNindividuos);
