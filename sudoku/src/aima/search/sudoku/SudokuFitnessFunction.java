@@ -16,7 +16,7 @@ public class SudokuFitnessFunction implements FitnessFunction{
                cantEvaluaciones++;
                stringToBoard(individual);/*se convierte el string a board*/
 
-               /*Calculamos el valor de la funcion fitnes*/
+               /*Calculamos el valor de la funcion fitness*/
                fitness = 20000000 - 10*(sumFilasColumnas() + multFilasColumnas() +
             		   			50*numerosFaltantes());
 

@@ -157,10 +157,13 @@ public class SudokuDemo {
 		if(opcion == 1){
 			System.out.print("Ingrese la cantidad maxima de poblacion inicial\n");
 			int cantMaxPopulation = input.nextInt();		
-			System.out.print("Ingrese la probabilidad de mutacion inicial(entre 0,0 - 1,0)\n");
+			System.out.print("Ingrese la probabilidad de mutacion inicial(entre '0,0' - '1,0')\n");
 			double probMutacion = input.nextDouble();	
+			System.out.print("Ingrese el tamaño de la poblacion de elite(entre '0' - 'max poblacion inicial')\n");
+			System.out.print("El recomendado es el 10% de la maxima poblacion inicial\n");
+			int eliteNindividuos = input.nextInt();	
 			
-			sudokuAG(board, cantMaxPopulation, probMutacion);			
+			sudokuAG(board, cantMaxPopulation, probMutacion, eliteNindividuos);			
 		}else if(opcion == 2){
 			sudokuWithDepthFirstSearch(board);
 		}else{
@@ -177,7 +180,7 @@ public class SudokuDemo {
 
 			Problem problem = new Problem(newBoard,
 					new SudokuSuccessorFunction(), new SudokuGoalTest());
-			Search search = new DepthFirstSearch(new TreeSearch());
+			Search search = new DepthFirstSearch(new GraphSearch());
 			SearchAgent agent = new SearchAgent(problem, search);
 
 			System.out.printf("\nLa O(n) temporal es: %d", 
@@ -192,7 +195,7 @@ public class SudokuDemo {
 	}
 
 	
-	private static void sudokuAG(SudokuBoard newBoard, int cantMaxPopulation, double probMutacion){
+	private static void sudokuAG(SudokuBoard newBoard, int cantMaxPopulation, double probMutacion, int eliteNindividuos){
 		System.out.println("\nSudokuDemo AG -->");
 		try {
 			int helpArray[] = new int [81];
@@ -212,7 +215,7 @@ public class SudokuDemo {
 										finiteAlphabet , probMutacion ,helpArray, newBoard);
 
 			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
-										new SudokuFitnessFunction(), new SudokuGoalTest());
+										new SudokuFitnessFunction(), new SudokuGoalTest(), eliteNindividuos);
 			
 			//System.out.printf("bestIndividual: %s", bestIndividual);
 			
