@@ -104,8 +104,8 @@ public class GeneticAlgorithm {
 			bestIndividual = retrieveBestIndividual(newPopulation, fitnessFn);
 			cnt++;
 			//System.out.printf("Poblacion: %d\n", population.size());
-			//if(this.mutationProbability > 0.2){
-            //    this.mutationProbability -= 0.005;
+			//if(this.mutationProbability > 0.4){
+             //   this.mutationProbability -= 0.001;
                 //System.out.printf("mutProb = %f, ", this.mutationProbability);
 			//}
 			
@@ -336,33 +336,31 @@ public class GeneticAlgorithm {
         xArray = x.toCharArray();
         yArray = y.toCharArray();
         
-        SudokuFitnessFunction fitness = new SudokuFitnessFunction();
+        /*SudokuFitnessFunction fitness = new SudokuFitnessFunction();
         
         double fitnessValueX = fitness.getValue(x);
-        double fitnessValueY = fitness.getValue(y);
+        double fitnessValueY = fitness.getValue(y);*/
         
-        double fitnessMayor = fitnessValueX;
+        /*double fitnessMayor = fitnessValueX;
         boolean mayorY = false;
         if(fitnessValueY > fitnessMayor){
         	fitnessMayor = fitnessValueY;
         	mayorY = true;
-        }
-        //System.out.println(xArray);
-        //System.out.println(xArray);
-        
+        }*/
+
         //generar un numero aleatorio para el punto de cruce
         // solo pueden ser en los puntos de corte validos
+        int c = randomCruce(individualLength);
+        int d = randomCruce(individualLength);
+        while(d == c){
+        	d = randomCruce(individualLength);
+        }
         
-        //do{
-	        int c = randomCruce(individualLength);
-	      //  int d = randomCruce(individualLength);
-	       // while(d == c){
-	       // 	d = randomCruce(individualLength);
-	      //  }
-	        
-	        //System.out.printf("punto de cruce %d\n", c);
-	        
-	        // realizar el cruce en el punto de cruce
+        boolean cruceUnico = random.nextBoolean();
+        /*Aquie basicamente hacemos con probabilidad aproximada al 50%
+         * un cruce de tipo simple(un solo punto de cruce)*/
+        if(cruceUnico){
+        	// realizar el cruce en el punto de cruce
 	        for (int i = 0 ; i < 81 ; i++){
 	            if (i <= c )
 	                    arrayResultante[i] = xArray[i];
@@ -371,47 +369,36 @@ public class GeneticAlgorithm {
 	        }
 	        
 	        stringResultante = String.copyValueOf(arrayResultante);
-        //}while(fitness.getValue(stringResultante) < fitnessMayor);
-	        //if(fitness.getValue(stringResultante) > fitnessMayor)
-	        	//return stringResultante;
-	        	//System.out.println(stringResultante);
-        //if(mayorY)
-        //	return y;
-        
-        return stringResultante;
-        
-            /*
-        if (d > c){
-	        for (int i = 0 ; i < 81 ; i++){
-	                if (i <= c )
+        }else{/*y con la otra probabilidad aproximada a 50% hacemos un cruce 
+        		de tipo triple(dos puntos de cruce)*/
+		     if (d > c){
+		        for (int i = 0 ; i < 81 ; i++){
+		                if (i <= c )
+		                        arrayResultante[i] = xArray[i];
+		                else{
+		                	if(i <= d)
+		                        arrayResultante[i] = yArray[i];
+		                	else
+		                		arrayResultante[i] = xArray[i];
+		                }		
+		        }
+	        }else{
+		        for (int i = 0 ; i < 81 ; i++){
+	                if (i <= d )
 	                        arrayResultante[i] = xArray[i];
 	                else {
-	                	if(i <= d)
+	                	if(i <= c)
 	                        arrayResultante[i] = yArray[i];
 	                	else
 	                		arrayResultante[i] = xArray[i];
 	                }		
+		        }
 	        }
+		    stringResultante = String.copyValueOf(arrayResultante);
         }
-        else{
-	        for (int i = 0 ; i < 81 ; i++){
-                if (i <= d )
-                        arrayResultante[i] = xArray[i];
-                else {
-                	if(i <= c)
-                        arrayResultante[i] = yArray[i];
-                	else
-                		arrayResultante[i] = xArray[i];
-                }		
-	        }
-        }*/
+
+        return stringResultante;
         
-        //df
-        //System.out.println(arrayResultante);
-        //convierte a String lo que se obtuvo en el cruce
-
-
-
 	}
 
 	
