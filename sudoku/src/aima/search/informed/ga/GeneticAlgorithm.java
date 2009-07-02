@@ -356,10 +356,10 @@ public class GeneticAlgorithm {
         	d = randomCruce(individualLength);
         }
         
-        boolean cruceUnico = random.nextBoolean();
+        int cruceUnico = random.nextInt(10);
         /*Aquie basicamente hacemos con probabilidad aproximada al 50%
          * un cruce de tipo simple(un solo punto de cruce)*/
-        if(cruceUnico){
+        if(cruceUnico < 8){
         	// realizar el cruce en el punto de cruce
 	        for (int i = 0 ; i < 81 ; i++){
 	            if (i <= c )
