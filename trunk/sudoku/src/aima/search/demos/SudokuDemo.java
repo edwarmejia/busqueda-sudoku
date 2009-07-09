@@ -116,15 +116,15 @@ new int [][]{
 public class SudokuDemo {
 
 	static SudokuBoard tableroComplejo = new SudokuBoard(new int [][]{
-			{0,0,0,0,0,6,7,8,0 },
-			{0,0,6,0,0,0,1,2,0 },
-			{0,0,9,0,2,3,0,5,0 },
-			{0,0,4,0,6,0,8,9,0 },
-			{0,6,5,8,9,0,2,1,0 },
-			{8,0,0,2,1,4,3,6,0 },
-			{0,0,0,0,4,2,9,7,0 },
-			{0,0,0,0,0,8,5,3,0 },//aca poner un 7
-			{0,0,0,0,0,1,0,0,0 } } );
+			{0,0,6,0,9,8,4,0,0},
+			{8,9,0,4,0,1,0,0,0},
+			{0,1,5,0,3,0,9,0,0},
+			{9,5,0,0,2,0,3,0,1},
+			{0,7,0,0,0,0,0,8,0},
+			{2,0,1,0,8,0,0,5,6},
+			{0,0,4,0,7,0,6,9,0},
+			{0,0,0,6,0,4,0,2,3},
+			{0,0,2,3,1,0,8,0,0} } );
 			
 					
 					
@@ -180,7 +180,7 @@ public class SudokuDemo {
 
 			Problem problem = new Problem(newBoard,
 					new SudokuSuccessorFunction(), new SudokuGoalTest());
-			Search search = new DepthFirstSearch(new GraphSearch());
+			Search search = new DepthFirstSearch(new TreeSearch());
 			SearchAgent agent = new SearchAgent(problem, search);
 
 			System.out.printf("\nLa O(n) temporal es: %d", 

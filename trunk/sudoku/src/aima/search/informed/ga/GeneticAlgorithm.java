@@ -506,9 +506,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-	                                	     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+	                                	     while ((helpArray[casilla_1 = random.nextInt(9)+ 9]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 9]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 9]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -518,7 +518,8 @@ public class GeneticAlgorithm {
 	                             }
 	                         }
 	                         cont_vacios = 0;
-                    	     casilla_1 = casilla_2 = casilla_3 = 0;	                         
+                    	     casilla_1 = casilla_2 = casilla_3 = 0;	    
+                    	     /*Region 3*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 18 ; i < 27 ; i++)
@@ -534,9 +535,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 18]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 18]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 18]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -546,7 +547,8 @@ public class GeneticAlgorithm {
 	                                 }
 	                         }
 	                         cont_vacios = 0;
-                    	     casilla_1 = casilla_2 = casilla_3 = 0;	                         
+                    	     casilla_1 = casilla_2 = casilla_3 = 0;	        
+                    	     /*Region 4*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 27 ; i < 36 ; i++)
@@ -562,9 +564,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 27]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 27]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 27]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -574,7 +576,8 @@ public class GeneticAlgorithm {
 	                                 }
 	                         }
 	                         cont_vacios = 0;
-                    	     casilla_1 = casilla_2 = casilla_3 = 0;	                         
+                    	     casilla_1 = casilla_2 = casilla_3 = 0;	      
+                    	     /*Region 5*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 36 ; i < 45 ; i++)
@@ -590,9 +593,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 36]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 36]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 36]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -602,7 +605,8 @@ public class GeneticAlgorithm {
 	                                 }
 	                         }
 	                         cont_vacios = 0;
-                    	     casilla_1 = casilla_2 = casilla_3 = 0;	                         
+                    	     casilla_1 = casilla_2 = casilla_3 = 0;	
+                    	     /*Region 6*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 45 ; i < 54 ; i++)
@@ -618,9 +622,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9) + 45]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -630,7 +634,8 @@ public class GeneticAlgorithm {
 	                                 }
 	                         }
 	                         cont_vacios = 0;
-                    	     casilla_1 = casilla_2 = casilla_3 = 0;	                         
+                    	     casilla_1 = casilla_2 = casilla_3 = 0;	   
+                    	     /*Region 7*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 54 ; i < 63 ; i++)
@@ -646,9 +651,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 54) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 54) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 54) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -659,6 +664,7 @@ public class GeneticAlgorithm {
 	                         }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;
+                    	     /*Region 8*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 63 ; i < 72 ; i++)
@@ -674,9 +680,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 63) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 63) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 63) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
@@ -686,7 +692,8 @@ public class GeneticAlgorithm {
 	                                 }
 	                         }
 	                         cont_vacios = 0;
-                    	     casilla_1 = casilla_2 = casilla_3 = 0;	                         
+                    	     casilla_1 = casilla_2 = casilla_3 = 0;	      
+                    	     /*Region 9*/
 	                         if (random.nextInt(100) <= probMutar){
 	
 	                                 for(int i = 72 ; i < 81 ; i++)
@@ -703,9 +710,9 @@ public class GeneticAlgorithm {
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
 	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+		                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 72) != 0);
+		                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 72) != 0 || (casilla_1 == casilla_2));
+		                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 72) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
 		                                     
 		                                     aux = individualArray[casilla_1];
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
