@@ -104,12 +104,12 @@ public class SudokuBoard {
 		int maxPopulation = 0;
 		int contador = 0;
 		
-		cantVacios = obtenerCantVacios(board.getBoard());
+		/*cantVacios = obtenerCantVacios(board.getBoard());
 		if(cantVacios <= 5){
 			maxPopulation = calculatePopulationMax(board.getBoard());
 		}else{
 			maxPopulation = 10000;
-		}
+		}*/
 		
 		maxPopulation = getCantMaxPopulation();
 		
@@ -158,6 +158,7 @@ public class SudokuBoard {
 				
 		}while( (population.size() < maxPopulation) && (contador < (maxPopulation + 50) ) );
 		
+		
 		return population;
 	}
 	
@@ -189,7 +190,7 @@ public class SudokuBoard {
 	 
 	 
 	
-	private String boardToSting(int [][] board){
+	public String boardToSting(int [][] board){
 		String string = new String();
 		String aux = new String();
 		int columna, fila;
