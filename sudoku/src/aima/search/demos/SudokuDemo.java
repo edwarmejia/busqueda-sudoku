@@ -11,9 +11,8 @@ import aima.search.framework.TreeSearch;
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
-import aima.search.informed.AStarSearch;
+import aima.search.informed.BacktrackingSearch;
 import aima.search.informed.ga.GeneticAlgorithm;
-import aima.search.sudoku.FitnessHeuristicFunction;
 import aima.search.sudoku.SudokuBoard;
 import aima.search.sudoku.SudokuFitnessFunction;
 import aima.search.sudoku.SudokuGoalTest;
@@ -144,7 +143,6 @@ public class SudokuDemo {
 		
 	}
 	
-	public static int pasos = 0;
 	public static SudokuBoard boardInicial;
 	
 	private static void newSudokuDemo() {
@@ -152,7 +150,7 @@ public class SudokuDemo {
 		//SudokuBoard boardInicial = new SudokuBoard(tableroComplejo.getBoard());
 
 		Scanner input = new Scanner(System.in);
-		System.out.print("Ingrese \n1:Algoritmo Genetico\n2:Algoritmo DFS: ");
+		System.out.print("Ingrese \n1:Algoritmo Genetico\n2:Algoritmo Backtracking: ");
 		int opcion = input.nextInt();
 		
 		if(opcion == 1){
@@ -161,16 +159,15 @@ public class SudokuDemo {
 			System.out.print("Ingrese la probabilidad de mutacion inicial(entre '0,0' - '1,0')\n");
 			double probMutacion = input.nextDouble();	
 			System.out.print("Ingrese el tamaño de la poblacion de elite(entre '0' - 'max poblacion inicial')\n");
-			System.out.print("El recomendado es el 10% de la maxima poblacion inicial\n");
+			System.out.print("El recomendado es el 25% de la maxima poblacion inicial\n");
 			int eliteNindividuos = input.nextInt();	
 			
 			sudokuAG(boardInicial, cantMaxPopulation, probMutacion, eliteNindividuos);			
 		}else if(opcion == 2){
-			sudokuWithDepthFirstSearch(boardInicial);
+			sudokuBacktrackingDemo(boardInicial);
+			System.out.printf("pasos = %d \n", BacktrackingSearch.pasos);
 		}else if(opcion == 3){
-			if(backtracking(boardInicial.getBoard()))
-				boardInicial.printBoard();
-			System.out.printf("pasos = %d \n", pasos);
+			sudokuWithDepthFirstSearch(boardInicial);
 		}else{
 			System.out.print("Opcion invalida\n");
 		}
@@ -241,6 +238,21 @@ public class SudokuDemo {
 		}		
 	}
 	
+	 private static void sudokuBacktrackingDemo(SudokuBoard board) { 
+		 System.out.
+		 println("\nSudokuPuzzleDemo Backtracking Search ()-->");
+		  try {
+			  BacktrackingSearch backtracking = new BacktrackingSearch();
+			  
+			  if( !backtracking.search(board.getBoard()) )
+				  System.out.println("\nNo se pudo resolver por este metodo");
+
+		  }catch (Exception e) {
+			  e.printStackTrace(); 
+		  }
+
+ }
+	 
 	public static void printBoard(int [][] board) {
 		System.out.println("\n ----------------- ");
 		for (int i = 0; i < 9; i++) {
@@ -273,143 +285,5 @@ public class SudokuDemo {
     }
 	  
 
-	
-	
-	 private static void sudokuAStarDemo(SudokuBoard newBoard) { 
-			 System.out.
-			 println("\nSudokuPuzzleDemo AStar Search (3)-->");
-			  try {
-				  Problem problem = new Problem(newBoard, new
-						  SudokuSuccessorFunction(), new SudokuGoalTest(), 
-						  new  FitnessHeuristicFunction()); 
-				  
-				  Search search = new AStarSearch(new TreeSearch()); 
-				  SearchAgent agent = new SearchAgent(problem, search);
-				  
-				  //printActions(agent.getActions());
-				  //printInstrumentation(agent.getInstrumentation()); } 
-			  }catch (Exception e) {
-				  e.printStackTrace(); 
-			  }
-
-	 }
-	
-	
-	 private static boolean backtracking(int board[][])
-	 {
-	 	int i,j,k;
-	 	boolean oiko;
-
-	 	for(i = 0; i < board.length; i++){
-	 		for(j = 0; j < board.length; j++){
-	 			if(board[i][j] != 0){
-	 				continue;
-	 			}
-	 			for(k = 1; k <= board.length; k++){
-	 					if(ubicarNumero(board, i, j, k)){
-	 						board[i][j] = k;
-	 						pasos +=1;
-	 						printTablero(board);
-	 						oiko = backtracking(board);
-	                         if(oiko){
-	 							return true;
-	 						}
-	                         board[i][j] = 0;
-	 					}
-	 			}
-	 			return false;
-	 		}
-	 	}
-
-	 	return true;
-
-
-
-	 }
-	
-		public static boolean ubicarNumero(int board[][], int fila, int columna, int k) {
-			if (board[fila][columna] == 0) {
-				if (chequearFilaColumna(board, fila, columna, k)
-						&& chequearRegion(board, fila, columna, k))
-					return true;
-			}
-			return false;
-
-		}
-		public static boolean chequearRegion(int [][] board, int fila, int columna, int k) {
-			int[] posic = null;
-			/* Guardamos la fila y la columna de la region */
-			posic = identificarRegion(fila, columna);
-
-			for (int i = posic[0]; i < posic[0] + 3; i++) { /* Chequea la region */
-				for (int j = posic[1]; j < posic[1] + 3; j++) {
-					if (board[i][j] == k) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
-		/* Identifica la region a la que pertenecen dicha fila/columna */
-		private static int[] identificarRegion(int fila, int columna) {
-			int[] retVal = null;
-
-			if (fila <= 2) {
-				fila = 0;
-				if (columna <= 2) {
-					columna = 0;
-				} else if (columna > 2 && columna <= 5) {
-					columna = 3;
-				} else
-					columna = 6;
-			} else if (fila <= 5 && fila > 2) {
-				fila = 3;
-				if (columna <= 2) {
-					columna = 0;
-				} else if (columna > 2 && columna <= 5) {
-					columna = 3;
-				} else
-					columna = 6;
-			} else if (fila <= 8 && fila > 5) {
-				fila = 6;
-				if (columna <= 2) {
-					columna = 0;
-				} else if (columna > 2 && columna <= 5) {
-					columna = 3;
-				} else
-					columna = 6;
-			}
-			retVal = new int[] { fila, columna };
-
-			return retVal;
-		}
-
-		/* Chequea que no haya repetidos en la fila/columna */
-		private static boolean chequearFilaColumna(int board[][], int fila, int columna, int k) {
-
-			for (int i = 0; i < board.length; i++) {
-				if (k == board[fila][i] && (columna != i)) {/* Chequea la fila */
-					return false;
-				}
-				if (k == board[i][columna] && (fila != i)) {/* Chequea la columna */
-					return false;
-				}
-			}
-
-			return true;
-		}
-	
-		public static void printTablero(int board[][]) {
-			System.out.println("\n ----------------- ");
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					System.out.print(' ');
-					System.out.print(board[i][j]);
-				}
-				System.out.print('\n');
-			}
-
-		}
 	
 }

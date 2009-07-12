@@ -117,7 +117,7 @@ public class GeneticAlgorithm {
 			
 			/*Si el bestIndividual de la poblacion se repitio 75 veces, volvemos
 			 *a generar la poblacion(la poblacion elite la mantenemos)*/
-			if(evitarMaxLocal >= 75){
+			if(evitarMaxLocal >= 50){
 				System.out.println("entro a evitar maximos locales, regeneramos la poblacion!\n");
 				/*Guardamos la poblacion de elite*/
 				elitePopulation = elitismoNindividuos(population, eliteNindividuos, fitnessFn);
