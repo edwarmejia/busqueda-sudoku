@@ -202,6 +202,7 @@ public class SudokuDemo {
 	
 	private static void sudokuAG(SudokuBoard board, int cantMaxPopulation, double probMutacion, int eliteNindividuos){
 		System.out.println("\nSudokuDemo AG -->");
+		long inicio = System.currentTimeMillis();
 		try {
 			int helpArray[] = new int [81];
 			
@@ -223,12 +224,16 @@ public class SudokuDemo {
 										new SudokuFitnessFunction(), new SudokuGoalTest(), eliteNindividuos);
 			
 			//System.out.printf("bestIndividual: %s", bestIndividual);
-			
+			long fin = System.currentTimeMillis();
 			printBoard(GeneticAlgorithm.stringToBoard(bestIndividual));
 			
 //			System.out.printf("popMax : %d", SudokuBoard.calculatePopulationMax(newBoard.getBoard()));
 			System.out.printf("\nLa O(n) temporal es: %d", 
 					SudokuFitnessFunction.cantEvaluaciones);
+			
+			System.out.printf("\ntiempo de resolucion: %d\n", 
+					(((fin - inicio)/1000)/60));
+			
 			
 			
 		} catch (Exception e) {
