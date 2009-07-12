@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import aima.search.demos.SudokuDemo;
 import aima.search.framework.BestFirstSearch;
 import aima.search.framework.GoalTest;
 import aima.search.framework.Metrics;
@@ -86,6 +87,8 @@ public class GeneticAlgorithm {
 	public String geneticAlgorithm(Set<String> population,
 			FitnessFunction fitnessFn, GoalTest goalTest, int eliteNindividuos) {
 		String bestIndividual = null;
+		String bestPreviousIndividual = new String();
+		Set<String> elitePopulation = new HashSet<String>();;
 		Set<String> newPopulation = null;
 		
 		validatePopulation(population);
@@ -94,14 +97,44 @@ public class GeneticAlgorithm {
 
 		// repeat
 		int cnt = 0;
-		int contador = 0;
+		//int contador = 0;
+		int evitarMaxLocal = 0;
 		SudokuFitnessFunction fitnessValue = new SudokuFitnessFunction();
 		
 		do {
-			contador++;
+			//contador++;
 			//bestIndividual = ga(population, fitnessFn, eliteNindividuos);
 			newPopulation = ga(population, fitnessFn, eliteNindividuos);
 			bestIndividual = retrieveBestIndividual(newPopulation, fitnessFn);
+			
+			
+			if(bestIndividual.compareTo(bestPreviousIndividual) == 0){
+				evitarMaxLocal++;
+			}else{
+				evitarMaxLocal = 0;
+			}
+			bestPreviousIndividual = bestIndividual;
+			
+			/*Si el bestIndividual de la poblacion se repitio 75 veces, volvemos
+			 *a generar la poblacion(la poblacion elite la mantenemos)*/
+			if(evitarMaxLocal >= 75){
+				System.out.println("entro a evitar maximos locales, regeneramos la poblacion!\n");
+				/*Guardamos la poblacion de elite*/
+				elitePopulation = elitismoNindividuos(population, eliteNindividuos, fitnessFn);
+				/*Borramos la poblacion completa*/
+				population.clear();
+				/*Regeneramos la poblacion*/
+				population.addAll(this.board.initPopulation(this.board));
+				
+				/*Removemos N individuos randomicamente para luego agregar la elitePopulation*/
+				population = removeNindividuosRandom(population, eliteNindividuos);
+				/*Agregamos la poblacion elite*/
+				population.addAll(elitePopulation);
+				
+				evitarMaxLocal = 0;
+				
+			}
+				
 			cnt++;
 			//System.out.printf("Poblacion: %d\n", population.size());
 			//if(this.mutationProbability > 0.4){

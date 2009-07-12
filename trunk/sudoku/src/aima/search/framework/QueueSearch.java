@@ -49,7 +49,7 @@ public abstract class QueueSearch extends NodeExpander {
 			}
 			
 			//node.getState()
-			//if(!cutoff){
+//			if(!cutoff){
 				//listaCerrada.add(node);
 				addExpandedNodesToFringe(fringe, node, problem, listaCerrada);
 				

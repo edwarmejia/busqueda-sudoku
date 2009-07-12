@@ -20,36 +20,36 @@ public class SudokuSuccessorFunction implements SuccessorFunction {
 
 		List<Successor> successors = new ArrayList<Successor>();
 		boolean coloco = false;
-		
+
 		for (int fila = 0; fila < board.getBoard().length; fila++) {
 			for (int columna = 0; columna < board.getBoard().length; columna++) {
+				coloco = false;
 				if (board.getBoard()[fila][columna] == 0) {
-					coloco = false;
 					for (int k = 1; k <= 9; k++) {
 						if (board.ubicarNumero(fila, columna, k)) {
 							coloco = true;
 							SudokuBoard newBoard = copyOf(board.getBoard());
 							newBoard.setValue(fila, columna, k);
+							//newBoard.printBoard();
 							//if(!listaCerrada.contains(newBoard.getBoard()))
-							successors.add(new Successor(newBoard));
+								successors.add(new Successor(newBoard));
 							
 							//newBoard.printBoard();
-						}else{
-							if(k == 9 && !coloco){
-								successors.removeAll(successors);
-								return new ArrayList<Successor>();
-							}
+						}else if(k == 9 && !coloco){
+							//successors.removeAll()
 						}
+						
 					}
 				}
 			}
 
 		}
+
 		//if(contSucesores == 0){
 			//contSucesores += successors.size();
 			//System.out.printf("lista = %d\n", successors.size());
 			if(successors.size() == 0){
-				System.out.println("paro\n");
+				//System.out.println("paro\n");
 				//board.printBoard();
 				//listaCerrada.add(board.getBoard());
 				/*try {

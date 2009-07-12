@@ -13,7 +13,7 @@ import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.AStarSearch;
 import aima.search.informed.ga.GeneticAlgorithm;
-import aima.search.sudoku.EmptyBoxHeuristicFunction;
+import aima.search.sudoku.FitnessHeuristicFunction;
 import aima.search.sudoku.SudokuBoard;
 import aima.search.sudoku.SudokuFitnessFunction;
 import aima.search.sudoku.SudokuGoalTest;
@@ -125,10 +125,7 @@ public class SudokuDemo {
 			{0,0,4,0,7,0,6,9,0},
 			{0,0,0,6,0,4,0,2,3},
 			{0,0,2,3,1,0,8,0,0} } );
-			
 					
-					
-	
 
 	static SudokuBoard tableroSencillo = new SudokuBoard(new int[][] {
 			{0,0,6,0,9,8,4,0,0},
@@ -142,13 +139,17 @@ public class SudokuDemo {
 			{0,0,2,3,1,0,8,0,0} });
 
 	public static void main(String[] args) {
-
+		
 		newSudokuDemo();
+		
 	}
-
+	
+	public static int pasos = 0;
+	public static SudokuBoard boardInicial;
+	
 	private static void newSudokuDemo() {
-		//SudokuBoard board = new SudokuBoard(SudokuFileParser.getBoard());
-		SudokuBoard board = new SudokuBoard(tableroComplejo.getBoard());
+		SudokuBoard boardInicial = new SudokuBoard(SudokuFileParser.getBoard());
+		//SudokuBoard boardInicial = new SudokuBoard(tableroComplejo.getBoard());
 
 		Scanner input = new Scanner(System.in);
 		System.out.print("Ingrese \n1:Algoritmo Genetico\n2:Algoritmo DFS: ");
@@ -163,9 +164,13 @@ public class SudokuDemo {
 			System.out.print("El recomendado es el 10% de la maxima poblacion inicial\n");
 			int eliteNindividuos = input.nextInt();	
 			
-			sudokuAG(board, cantMaxPopulation, probMutacion, eliteNindividuos);			
+			sudokuAG(boardInicial, cantMaxPopulation, probMutacion, eliteNindividuos);			
 		}else if(opcion == 2){
-			sudokuWithDepthFirstSearch(board);
+			sudokuWithDepthFirstSearch(boardInicial);
+		}else if(opcion == 3){
+			if(backtracking(boardInicial.getBoard()))
+				boardInicial.printBoard();
+			System.out.printf("pasos = %d \n", pasos);
 		}else{
 			System.out.print("Opcion invalida\n");
 		}
@@ -195,7 +200,7 @@ public class SudokuDemo {
 	}
 
 	
-	private static void sudokuAG(SudokuBoard newBoard, int cantMaxPopulation, double probMutacion, int eliteNindividuos){
+	private static void sudokuAG(SudokuBoard board, int cantMaxPopulation, double probMutacion, int eliteNindividuos){
 		System.out.println("\nSudokuDemo AG -->");
 		try {
 			int helpArray[] = new int [81];
@@ -207,14 +212,14 @@ public class SudokuDemo {
 			finiteAlphabet.add('7'); finiteAlphabet.add('8');
 			finiteAlphabet.add('9');			
 			
-			helpArray = boardToArray(newBoard);
-
-			newBoard.setCantMaxPopulation(cantMaxPopulation);
+			helpArray = boardToArray(board);
+		
+			board.setCantMaxPopulation(cantMaxPopulation);
 			
 			GeneticAlgorithm search = new GeneticAlgorithm(81, 
-										finiteAlphabet , probMutacion ,helpArray, newBoard, cantMaxPopulation);
+										finiteAlphabet , probMutacion ,helpArray, board, cantMaxPopulation);
 
-			String bestIndividual =  search.geneticAlgorithm(newBoard.initPopulation(newBoard), 
+			String bestIndividual =  search.geneticAlgorithm(board.initPopulation(board), 
 										new SudokuFitnessFunction(), new SudokuGoalTest(), eliteNindividuos);
 			
 			//System.out.printf("bestIndividual: %s", bestIndividual);
@@ -265,51 +270,141 @@ public class SudokuDemo {
 
 	
 	
+	 private static void sudokuAStarDemo(SudokuBoard newBoard) { 
+			 System.out.
+			 println("\nSudokuPuzzleDemo AStar Search (3)-->");
+			  try {
+				  Problem problem = new Problem(newBoard, new
+						  SudokuSuccessorFunction(), new SudokuGoalTest(), 
+						  new  FitnessHeuristicFunction()); 
+				  
+				  Search search = new AStarSearch(new TreeSearch()); 
+				  SearchAgent agent = new SearchAgent(problem, search);
+				  
+				  //printActions(agent.getActions());
+				  //printInstrumentation(agent.getInstrumentation()); } 
+			  }catch (Exception e) {
+				  e.printStackTrace(); 
+			  }
+
+	 }
 	
 	
-	/*private static void sudokuIDLSDemo(SudokuBoard tablero,
-			boolean tipo_lista_cerrada) {
+	 private static boolean backtracking(int board[][])
+	 {
+	 	int i,j,k;
+	 	boolean oiko;
+
+	 	for(i = 0; i < board.length; i++){
+	 		for(j = 0; j < board.length; j++){
+	 			if(board[i][j] != 0){
+	 				continue;
+	 			}
+	 			for(k = 1; k <= board.length; k++){
+	 					if(ubicarNumero(board, i, j, k)){
+	 						board[i][j] = k;
+	 						pasos +=1;
+	 						printTablero(board);
+	 						oiko = backtracking(board);
+	                         if(oiko){
+	 							return true;
+	 						}
+	                         board[i][j] = 0;
+	 					}
+	 			}
+	 			return false;
+	 		}
+	 	}
+
+	 	return true;
+
+
+
+	 }
 	
-		if (tipo_lista_cerrada)
-			System.out
-			.println("\n SudokuDemo Iterative DLS con listas cerradas -->");			
-		else
-			System.out.println("\n SudokuDemo Iterative DLS -->");			
-	
-		try {
-			Problem problem = new Problem(tablero,
-					new SudokuSuccessorFunction(),
-					new SudokuGoalTest());
-			Search search = new IterativeDeepeningSearch(tipo_lista_cerrada);
-	
-			SearchAgent agent = new SearchAgent(problem, search);
-			String resultado = agent.getInstrumentation().getProperty(
-					"pathCost");
-			//if (!resultado.equals("0"))
-				//porcentaje_IDLS++;
-	
-			 //printActions(agent.getActions());
-			 //printInstrumentation(agent.getInstrumentation());
-			 //Instrumentation = new 
-			// System.out.println("Final State=\n" +
-			//search.getLastSearchState());
-	
-		} catch (Exception e) {
-			e.printStackTrace();
+		public static boolean ubicarNumero(int board[][], int fila, int columna, int k) {
+			if (board[fila][columna] == 0) {
+				if (chequearFilaColumna(board, fila, columna, k)
+						&& chequearRegion(board, fila, columna, k))
+					return true;
+			}
+			return false;
+
+		}
+		public static boolean chequearRegion(int [][] board, int fila, int columna, int k) {
+			int[] posic = null;
+			/* Guardamos la fila y la columna de la region */
+			posic = identificarRegion(fila, columna);
+
+			for (int i = posic[0]; i < posic[0] + 3; i++) { /* Chequea la region */
+				for (int j = posic[1]; j < posic[1] + 3; j++) {
+					if (board[i][j] == k) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 
-	}*/
+		/* Identifica la region a la que pertenecen dicha fila/columna */
+		private static int[] identificarRegion(int fila, int columna) {
+			int[] retVal = null;
+
+			if (fila <= 2) {
+				fila = 0;
+				if (columna <= 2) {
+					columna = 0;
+				} else if (columna > 2 && columna <= 5) {
+					columna = 3;
+				} else
+					columna = 6;
+			} else if (fila <= 5 && fila > 2) {
+				fila = 3;
+				if (columna <= 2) {
+					columna = 0;
+				} else if (columna > 2 && columna <= 5) {
+					columna = 3;
+				} else
+					columna = 6;
+			} else if (fila <= 8 && fila > 5) {
+				fila = 6;
+				if (columna <= 2) {
+					columna = 0;
+				} else if (columna > 2 && columna <= 5) {
+					columna = 3;
+				} else
+					columna = 6;
+			}
+			retVal = new int[] { fila, columna };
+
+			return retVal;
+		}
+
+		/* Chequea que no haya repetidos en la fila/columna */
+		private static boolean chequearFilaColumna(int board[][], int fila, int columna, int k) {
+
+			for (int i = 0; i < board.length; i++) {
+				if (k == board[fila][i] && (columna != i)) {/* Chequea la fila */
+					return false;
+				}
+				if (k == board[i][columna] && (fila != i)) {/* Chequea la columna */
+					return false;
+				}
+			}
+
+			return true;
+		}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		public static void printTablero(int board[][]) {
+			System.out.println("\n ----------------- ");
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					System.out.print(' ');
+					System.out.print(board[i][j]);
+				}
+				System.out.print('\n');
+			}
+
+		}
 	
 }

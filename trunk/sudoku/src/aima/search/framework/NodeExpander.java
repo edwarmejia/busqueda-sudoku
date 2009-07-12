@@ -103,13 +103,13 @@ public class NodeExpander {
 				
 				//SudokuBoard boardCompare = (SudokuBoard) aNode.getState();
 				
-				//if(!listaCerrada.contains(boardCompare.getBoard()))
-				nodes.add(aNode);
+				//if(!2.contains(boardCompare.getBoard()))
+					nodes.add(aNode);
 	
 			}
 			
 		}else{
-			//System.out.printf("p = %d \n", node.getDepth());	
+			System.out.printf("p = %d \n", node.getDepth());	
 		}
 		metrics.set(NODES_EXPANDED, metrics.getInt(NODES_EXPANDED) + 1);
 		
