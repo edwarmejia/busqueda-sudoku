@@ -22,6 +22,7 @@ import aima.search.uninformed.DepthFirstSearch;
 import aima.search.uninformed.IterativeDeepeningSearch;
 import aima.search.informed.ga.FitnessFunction;
 
+import java.awt.*; //para el beep nomas
 
 
 /*
@@ -141,6 +142,8 @@ public class SudokuDemo {
 		
 		newSudokuDemo();
 		
+ 
+
 	}
 	
 	public static SudokuBoard boardInicial;
@@ -171,9 +174,12 @@ public class SudokuDemo {
 		}else{
 			System.out.print("Opcion invalida\n");
 		}
-
-
-
+		/*Beep's para anunciar que termino el algoritmo*/
+		Toolkit.getDefaultToolkit().beep();
+		Toolkit.getDefaultToolkit().beep();
+		Toolkit.getDefaultToolkit().beep();
+		Toolkit.getDefaultToolkit().beep();
+		Toolkit.getDefaultToolkit().beep();
 	}
 
 	private static void sudokuWithDepthFirstSearch(SudokuBoard newBoard) {
