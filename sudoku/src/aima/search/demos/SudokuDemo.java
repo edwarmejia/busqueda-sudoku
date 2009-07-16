@@ -165,7 +165,8 @@ public class SudokuDemo {
 			System.out.print("El recomendado es el 25% de la maxima poblacion inicial\n");
 			int eliteNindividuos = input.nextInt();	
 			
-			sudokuAG(boardInicial, cantMaxPopulation, probMutacion, eliteNindividuos);			
+			sudokuAG(boardInicial, cantMaxPopulation, probMutacion, eliteNindividuos);
+			
 		}else if(opcion == 2){
 			sudokuBacktrackingDemo(boardInicial);
 			System.out.printf("pasos = %d \n", BacktrackingSearch.pasos);
@@ -226,7 +227,6 @@ public class SudokuDemo {
 			String bestIndividual =  search.geneticAlgorithm(board.initPopulation(board), 
 										new SudokuFitnessFunction(), new SudokuGoalTest(), eliteNindividuos);
 			
-			//System.out.printf("bestIndividual: %s", bestIndividual);
 			long fin = System.currentTimeMillis();
 			printBoard(GeneticAlgorithm.stringToBoard(bestIndividual));
 			
@@ -237,7 +237,7 @@ public class SudokuDemo {
 			System.out.printf("\ntiempo de resolucion: %d\n", 
 					(((fin - inicio)/1000)/60));
 			
-			
+			System.out.printf("La cantidad de generaciones fue: %f", search.getIterations());;			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

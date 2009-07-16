@@ -64,7 +64,6 @@ public class GeneticAlgorithm {
 	private final Random random = new Random();
 	//
 	int helpArray[] = new int[81];
-     
     SudokuBoard board;
     
     public GeneticAlgorithm(int individualLength,
@@ -97,16 +96,12 @@ public class GeneticAlgorithm {
 
 		// repeat
 		int cnt = 0;
-		//int contador = 0;
 		int evitarMaxLocal = 0;
 		SudokuFitnessFunction fitnessValue = new SudokuFitnessFunction();
 		
 		do {
-			//contador++;
-			//bestIndividual = ga(population, fitnessFn, eliteNindividuos);
 			newPopulation = ga(population, fitnessFn, eliteNindividuos);
 			bestIndividual = retrieveBestIndividual(newPopulation, fitnessFn);
-			
 			
 			if(bestIndividual.compareTo(bestPreviousIndividual) == 0){
 				evitarMaxLocal++;
@@ -136,14 +131,13 @@ public class GeneticAlgorithm {
 			}
 				
 			cnt++;
-			//System.out.printf("Poblacion: %d\n", population.size());
-			//if(this.mutationProbability > 0.4){
-             //   this.mutationProbability -= 0.001;
-                //System.out.printf("mutProb = %f, ", this.mutationProbability);
-			//}
+			/*Aqui lo que hacemos es ir disminuyendo la probabilidad de mutacion
+			 * mientras van avanzando la creacion de generaciones*/
+			if(this.mutationProbability < 0.8){
+                this.mutationProbability += 0.001;
+                System.out.printf("mutProb = %f, ", this.mutationProbability);
+			}
 			
-			//if(population.size() == 1)
-				//return bestIndividual;
 			System.out.printf("fValue %f\n", fitnessValue.getValue(bestIndividual));
 			
 			// until some individual is fit enough, or enough time has elapsed
@@ -284,13 +278,11 @@ public class GeneticAlgorithm {
 		
 		for (int i = 0; population.size() > (this.populationLenght - eliteNindividuos); i++) {
 			population.remove(popArray[random.nextInt(popArray.length)]);
-				//i--;
 		}
 		
 		return population;
 	}
 	private Set<String> elitismoNindividuos(Set<String> population, int n, FitnessFunction fitnessFn){
-		//String selected = null;
 		Set<String> elitePopulation = new HashSet<String>();
 		// Determine all of the fitness values
 		double[] fValues = new double[population.size()];
@@ -358,8 +350,6 @@ public class GeneticAlgorithm {
 	// function REPRODUCE(x, y) returns an individual
 	// inputs: x, y, parent individuals
 	private String reproduce(String x, String y) {
-		//System.out.println(x);
-        //System.out.println(y);
         char xArray[] = new char [81];
         char yArray[] = new char [81];
         char arrayResultante[] = new char[81];
@@ -369,20 +359,8 @@ public class GeneticAlgorithm {
         xArray = x.toCharArray();
         yArray = y.toCharArray();
         
-        /*SudokuFitnessFunction fitness = new SudokuFitnessFunction();
-        
-        double fitnessValueX = fitness.getValue(x);
-        double fitnessValueY = fitness.getValue(y);*/
-        
-        /*double fitnessMayor = fitnessValueX;
-        boolean mayorY = false;
-        if(fitnessValueY > fitnessMayor){
-        	fitnessMayor = fitnessValueY;
-        	mayorY = true;
-        }*/
-
-        //generar un numero aleatorio para el punto de cruce
-        // solo pueden ser en los puntos de corte validos
+        /* Generar un numero aleatorio para el punto de cruce
+         solo pueden ser en los puntos de corte validos*/
         int c = randomCruce(individualLength);
         int d = randomCruce(individualLength);
         while(d == c){
@@ -390,7 +368,7 @@ public class GeneticAlgorithm {
         }
         
         int cruceUnico = random.nextInt(10);
-        /*Aquie basicamente hacemos con probabilidad aproximada al 50%
+        /*Aquie basicamente hacemos con probabilidad aproximada al 80%
          * un cruce de tipo simple(un solo punto de cruce)*/
         if(cruceUnico < 8){
         	// realizar el cruce en el punto de cruce
@@ -402,7 +380,7 @@ public class GeneticAlgorithm {
 	        }
 	        
 	        stringResultante = String.copyValueOf(arrayResultante);
-        }else{/*y con la otra probabilidad aproximada a 50% hacemos un cruce 
+        }else{/*y con la otra probabilidad aproximada a 20% hacemos un cruce 
         		de tipo triple(dos puntos de cruce)*/
 		     if (d > c){
 		        for (int i = 0 ; i < 81 ; i++){
@@ -450,20 +428,13 @@ public class GeneticAlgorithm {
 	
 	
 	private String mutate(String individual) {
-	     int probMutar;
-
-         int casilla_1 = 0;
-         int casilla_2 = 0;
-         int casilla_3 = 0;
+         int casilla_1 = 0, casilla_2 = 0, casilla_3 = 0;
          char individualArray[] = new char[81];
          char aux;
-//         int region_valida; // 0-8;
          String string_mutado = new String();
-         int cont_vacios = 0;
-         int valido = 0;
-  //       int encontro_region=0;
+         int cont_vacios = 0, valido = 0;
 
-         //verifciar que exista al menos una region para mutar
+         /*Verifciar que exista al menos una region para mutar en el tablero*/
          for (int i = 0 ; i < 81 ; i++){
                  cont_vacios=0;
                  for(int j = i ; j < i+9 ; j++){
@@ -482,28 +453,18 @@ public class GeneticAlgorithm {
          
          double fitnessValueIndividual = fitness.getValue(individual);
          
-       //  do{
 	         if (valido == 1){
-	
-	        	 	 //randomRegion = random.nextInt(11);
-	                 //detectar region a mutar, buscar region valida
-	                 //while(encontro_region == 0){
-	
 	                         cont_vacios = 0;
 	
-	                         //generar numero aleatoria de region y verificar que sea valida
-	                         //para la mutacion
-	                         probMutar = random.nextInt(100);
 	                         /*Region 1*/
-	                         if ( random.nextInt(100) <= probMutar){
+	                         if ( random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 0 ; i < 9 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	                                 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
+	                                 
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -524,15 +485,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                              casilla_1 = casilla_2 = casilla_3 = 0;	                         
 	                         /*Region 2*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 9 ; i < 18 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -553,15 +512,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	    
                     	     /*Region 3*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 18 ; i < 27 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -582,15 +539,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	        
                     	     /*Region 4*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 27 ; i < 36 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -611,15 +566,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	      
                     	     /*Region 5*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 36 ; i < 45 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -640,15 +593,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	
                     	     /*Region 6*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 45 ; i < 54 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -669,15 +620,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	   
                     	     /*Region 7*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 54 ; i < 63 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -698,15 +647,13 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;
                     	     /*Region 8*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 63 ; i < 72 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
 	                                         aux = individualArray[casilla_1];
@@ -727,15 +674,14 @@ public class GeneticAlgorithm {
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	      
                     	     /*Region 9*/
-	                         if (random.nextInt(100) <= probMutar){
+	                         if (random.nextInt(100) <= this.mutationProbability){
 	
 	                                 for(int i = 72 ; i < 81 ; i++)
 	                                         if (helpArray[i] == 0)cont_vacios++;
 	
 	                                 int tipoMutacion = random.nextInt(1);
-	                                 //if(tipoMutacion == 0){
+
 	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         //encontro_region = 1;
 	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
 	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
 	                                         //se realiza la mutacion
@@ -755,19 +701,10 @@ public class GeneticAlgorithm {
 	                                 }
 	
 	                         }
-	
-	
-	                 //}
 	                 string_mutado = String.copyValueOf(individualArray);
-//	                 return string_mutado;
 	         }
-        // }while((fitness.getValue(string_mutado) < fitnessValueIndividual));
        
          return string_mutado;
-         
-        //	 return individual;
-
-         
 }
 
 	private String retrieveBestIndividual(Set<String> population,
@@ -786,7 +723,5 @@ public class GeneticAlgorithm {
 		return bestIndividual;
 	}
 
-	private int randomOffset(int length) {
-		return random.nextInt(length);
-	}
+
 }
