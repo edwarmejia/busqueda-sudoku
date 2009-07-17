@@ -110,9 +110,9 @@ public class GeneticAlgorithm {
 			}
 			bestPreviousIndividual = bestIndividual;
 			
-			/*Si el bestIndividual de la poblacion se repitio 75 veces, volvemos
+			/*Si el bestIndividual de la poblacion se repitio 100 veces, volvemos
 			 *a generar la poblacion(la poblacion elite la mantenemos)*/
-			if(evitarMaxLocal >= 50){
+			if(evitarMaxLocal >= 100){
 				System.out.println("entro a evitar maximos locales, regeneramos la poblacion!\n");
 				/*Guardamos la poblacion de elite*/
 				elitePopulation = elitismoNindividuos(population, eliteNindividuos, fitnessFn);
@@ -455,7 +455,8 @@ public class GeneticAlgorithm {
          
 	         if (valido == 1){
 	                         cont_vacios = 0;
-	
+	                         boolean mutateMultiplesRegiones =  random.nextBoolean();
+	                         boolean muto = false;
 	                         /*Region 1*/
 	                         if ( random.nextInt(100) <= this.mutationProbability){
 	
@@ -470,6 +471,7 @@ public class GeneticAlgorithm {
 	                                         aux = individualArray[casilla_1];
 	                                         individualArray[casilla_1] = individualArray[casilla_2];
 	                                         individualArray[casilla_2] = aux;
+	                                         muto = true;
 	                                 }else if (cont_vacios > 2){
 		                                     while ((helpArray[casilla_1 = random.nextInt(9)]) != 0);
 		                                     while ((helpArray[casilla_2 = random.nextInt(9)]) != 0 || (casilla_1 == casilla_2));
@@ -479,228 +481,258 @@ public class GeneticAlgorithm {
 		                                     individualArray[casilla_1] = individualArray[casilla_2];
 		                                     individualArray[casilla_2] = individualArray[casilla_3];
 		                                     individualArray[casilla_3] = aux;
-	                                     
+		                                     muto = true;
 	                                 }
 	                         }
 	                         cont_vacios = 0;
                              casilla_1 = casilla_2 = casilla_3 = 0;	                         
 	                         /*Region 2*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 9 ; i < 18 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-	                                	     while ((helpArray[casilla_1 = random.nextInt(9)+ 9]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 9]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 9]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-	                                 
-	                             }
-	                         }
+                             if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 9 ; i < 18 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 9]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 9]) != 0 || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+		                                	     while ((helpArray[casilla_1 = random.nextInt(9)+ 9]) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 9]) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 9]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+		                                 
+		                             }
+		                         }
+                             }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	    
                     	     /*Region 3*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 18 ; i < 27 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 18]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 18]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 18]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-	                                 
-	                                 }
-	                         }
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 18 ; i < 27 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 18]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 18]) != 0 || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 18]) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 18]) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 18]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+		                                 }
+		                         }
+                    	     }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	        
                     	     /*Region 4*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 27 ; i < 36 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 27]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 27]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 27]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-	                                 
-	                                 }
-	                         }
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 27 ; i < 36 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 27]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 27]) != 0 || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 27]) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 27]) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 27]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+		                                 }
+		                         }
+                    	     }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	      
                     	     /*Region 5*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 36 ; i < 45 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 36]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 36]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 36]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-	                                 
-	                                 }
-	                         }
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 36 ; i < 45 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 36]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 36]) != 0 || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9)+ 36]) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)+ 36]) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)+ 36]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+		                                 
+		                                 }
+		                         }
+                    	     }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	
                     	     /*Region 6*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 45 ; i < 54 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9) + 45]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-		                                 
-	                                 }
-	                         }
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 45 ; i < 54 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0  || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9) + 45]) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9) + 45]) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9) + 45]) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+			                                 
+		                                 }
+		                         }
+                    	     }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	   
                     	     /*Region 7*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 54 ; i < 63 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 54) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 54) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 54) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-	                                 
-	                                 }
-	                         }
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 54 ; i < 63 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 54]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 54]) != 0  || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 54) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 54) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 54) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+		                                 
+		                                 }
+		                         }
+                    	     }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;
                     	     /*Region 8*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
-	
-	                                 for(int i = 63 ; i < 72 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 63) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 63) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 63) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-	                                 
-	                                 }
-	                         }
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 63 ; i < 72 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 63]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 63]) != 0 || (casilla_1 == casilla_2));
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 63) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 63) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 63) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+		                                 
+		                                 }
+		                         }
+                    	     }
 	                         cont_vacios = 0;
                     	     casilla_1 = casilla_2 = casilla_3 = 0;	      
                     	     /*Region 9*/
-	                         if (random.nextInt(100) <= this.mutationProbability){
+                    	     if( (!muto) || (muto && mutateMultiplesRegiones) ){
+		                         if (random.nextInt(100) <= this.mutationProbability){
+		
+		                                 for(int i = 72 ; i < 81 ; i++)
+		                                         if (helpArray[i] == 0)cont_vacios++;
+		
+		                                 int tipoMutacion = random.nextInt(1);
 	
-	                                 for(int i = 72 ; i < 81 ; i++)
-	                                         if (helpArray[i] == 0)cont_vacios++;
-	
-	                                 int tipoMutacion = random.nextInt(1);
-
-	                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
-	                                         while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
-	                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
-	                                         //se realiza la mutacion
-	                                         aux = individualArray[casilla_1];
-	                                         individualArray[casilla_1] = individualArray[casilla_2];
-	                                         individualArray[casilla_2] = aux;
-	                                 }else if (cont_vacios > 2){
-		                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 72) != 0);
-		                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 72) != 0 || (casilla_1 == casilla_2));
-		                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 72) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
-		                                     
-		                                     aux = individualArray[casilla_1];
-		                                     individualArray[casilla_1] = individualArray[casilla_2];
-		                                     individualArray[casilla_2] = individualArray[casilla_3];
-		                                     individualArray[casilla_3] = aux;
-		                                 
-	                                 }
-	
-	                         }
+		                                 if (cont_vacios == 2 || (cont_vacios > 2 && tipoMutacion == 0)){
+		                                         while ((helpArray[casilla_1 = random.nextInt(9) + 72]) != 0);
+		                                         while ((helpArray[casilla_2 = random.nextInt(9) + 72]) != 0  || (casilla_1 == casilla_2));
+		                                         //se realiza la mutacion
+		                                         aux = individualArray[casilla_1];
+		                                         individualArray[casilla_1] = individualArray[casilla_2];
+		                                         individualArray[casilla_2] = aux;
+		                                         muto = true;
+		                                 }else if (cont_vacios > 2){
+			                                     while ((helpArray[casilla_1 = random.nextInt(9)]+ 72) != 0);
+			                                     while ((helpArray[casilla_2 = random.nextInt(9)]+ 72) != 0 || (casilla_1 == casilla_2));
+			                                     while ((helpArray[casilla_3 = random.nextInt(9)]+ 72) != 0 || (casilla_3 == casilla_2 && casilla_3 == casilla_1 && casilla_2 == casilla_1));
+			                                     
+			                                     aux = individualArray[casilla_1];
+			                                     individualArray[casilla_1] = individualArray[casilla_2];
+			                                     individualArray[casilla_2] = individualArray[casilla_3];
+			                                     individualArray[casilla_3] = aux;
+			                                     muto = true;
+			                                 
+		                                 }
+		
+		                         }
+                    	     }
 	                 string_mutado = String.copyValueOf(individualArray);
 	         }
        
