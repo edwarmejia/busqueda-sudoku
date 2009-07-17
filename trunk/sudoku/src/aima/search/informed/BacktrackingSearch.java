@@ -17,7 +17,6 @@ public class BacktrackingSearch {
 	 					if(ubicarNumero(board, i, j, k)){
 	 						board[i][j] = k;
 	 						pasos +=1;
-	 						printTablero(board);
 	 						oiko = search(board);
 	                         if(oiko){
 	 							return true;
@@ -28,7 +27,7 @@ public class BacktrackingSearch {
 	 			return false;
 	 		}
 	 	}
-
+	 	printTablero(board);
 	 	return true;
 
 
