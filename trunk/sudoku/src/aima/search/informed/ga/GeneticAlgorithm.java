@@ -65,9 +65,20 @@ public class GeneticAlgorithm {
 	//
 	int helpArray[] = new int[81];
     SudokuBoard board;
+    private static long tiempoInicio;
+    private static long tiempoFin;
+    public static long tiempoMaxEjecucion;
+    
+    public void setTiempoMaxEjecucion(long tiempo){
+    	tiempoMaxEjecucion = tiempo;
+    }
+    public long getTiempoMaxEjecucion(){
+    	return tiempoMaxEjecucion;
+    }
     
     public GeneticAlgorithm(int individualLength,
-                    Set<Character> finiteAlphabet, double mutationProbabilityInitial, int[] helpArrayp, SudokuBoard board, int populationLength) {
+                    Set<Character> finiteAlphabet, double mutationProbabilityInitial, 
+                    int[] helpArrayp, SudokuBoard board, int populationLength, long tiempoMaxEjecucion) {
             this.helpArray = helpArrayp;
             this.individualLength = individualLength;
             this.finiteAlphabet = finiteAlphabet
@@ -77,6 +88,7 @@ public class GeneticAlgorithm {
             
             this.board = board;
             this.populationLenght = populationLength;
+            setTiempoMaxEjecucion(tiempoMaxEjecucion);
     }
 
 
@@ -98,7 +110,7 @@ public class GeneticAlgorithm {
 		int cnt = 0;
 		int evitarMaxLocal = 0;
 		SudokuFitnessFunction fitnessValue = new SudokuFitnessFunction();
-		
+		tiempoInicio = System.currentTimeMillis();
 		do {
 			newPopulation = ga(population, fitnessFn, eliteNindividuos);
 			bestIndividual = retrieveBestIndividual(newPopulation, fitnessFn);
@@ -140,6 +152,11 @@ public class GeneticAlgorithm {
 			
 			System.out.printf("fValue %f\n", fitnessValue.getValue(bestIndividual));
 			
+			
+			tiempoFin = System.currentTimeMillis();
+			long tiempoTrans = ((tiempoFin - tiempoInicio)/1000)/60;
+			if(tiempoTrans > getTiempoMaxEjecucion())
+				break;
 			// until some individual is fit enough, or enough time has elapsed
 		} while (!goalTest.isGoalBoard(stringToBoard(bestIndividual)) );
 		setIterations(cnt);
