@@ -164,8 +164,10 @@ public class SudokuDemo {
 			System.out.print("Ingrese el tamaño de la poblacion de elite(entre '0' - 'max poblacion inicial')\n");
 			System.out.print("El recomendado es el 25% de la maxima poblacion inicial\n");
 			int eliteNindividuos = input.nextInt();	
+			System.out.print("Ingrese el tiempo maximo de ejecucion en minutos\n");
+			long tiempoMaxEjecucion = input.nextLong();	
 			
-			sudokuAG(boardInicial, cantMaxPopulation, probMutacion, eliteNindividuos);
+			sudokuAG(boardInicial, cantMaxPopulation, probMutacion, eliteNindividuos, tiempoMaxEjecucion);
 			
 		}else if(opcion == 2){
 			sudokuBacktrackingDemo(boardInicial);
@@ -204,7 +206,7 @@ public class SudokuDemo {
 	}
 
 	
-	private static void sudokuAG(SudokuBoard board, int cantMaxPopulation, double probMutacion, int eliteNindividuos){
+	private static void sudokuAG(SudokuBoard board, int cantMaxPopulation, double probMutacion, int eliteNindividuos, long tiempoMaxEjecucion){
 		System.out.println("\nSudokuDemo AG -->");
 		long inicio = System.currentTimeMillis();
 		try {
@@ -222,7 +224,7 @@ public class SudokuDemo {
 			board.setCantMaxPopulation(cantMaxPopulation);
 			
 			GeneticAlgorithm search = new GeneticAlgorithm(81, 
-										finiteAlphabet , probMutacion ,helpArray, board, cantMaxPopulation);
+										finiteAlphabet , probMutacion ,helpArray, board, cantMaxPopulation, tiempoMaxEjecucion);
 
 			String bestIndividual =  search.geneticAlgorithm(board.initPopulation(board), 
 										new SudokuFitnessFunction(), new SudokuGoalTest(), eliteNindividuos);
@@ -234,10 +236,10 @@ public class SudokuDemo {
 			System.out.printf("\nLa O(n) temporal es: %d", 
 					SudokuFitnessFunction.cantEvaluaciones);
 			
-			System.out.printf("\ntiempo de resolucion: %d\n", 
+			System.out.printf("\ntiempo de busqueda fue: %d\n", 
 					(((fin - inicio)/1000)/60));
 			
-			System.out.printf("La cantidad de generaciones fue: %f", search.getIterations());;			
+			System.out.printf("La cantidad de generaciones fue: %d", search.getIterations());;			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
